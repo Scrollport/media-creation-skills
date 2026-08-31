@@ -1,0 +1,19 @@
+{
+  "$schema": "./registry.schema.json",
+  "schema_version": 2,
+  "repository": "https://github.com/Scrollport/media-creation-skills",
+  "skills": [
+    {
+      "id": "media-creation",
+      "path": "skills/media-creation",
+      "status": "verified",
+      "customer_proven": false
+    },
+    {
+      "id": "media-audio-edition",
+      "path": "skills/media-audio-edition",
+      "status": "verified",
+      "customer_proven": false
+    }
+  ]
+}

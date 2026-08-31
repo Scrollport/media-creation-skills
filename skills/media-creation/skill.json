@@ -1,0 +1,56 @@
+{
+  "$schema": "../../skill.schema.json",
+  "schema_version": 2,
+  "id": "media-creation",
+  "title": "Media creation",
+  "version": "1.0.0",
+  "status": "verified",
+  "customer_proven": false,
+  "summary": "Route a media request to the smallest verified function Skill with the required creative and review checkpoints.",
+  "outcome": "One explicit choice of Audio Edition for supported written-content-to-audio requests, or a clear unavailable boundary for other media jobs.",
+  "boundary": "The router does not generate, publish, host or distribute media and does not improvise paid image or video workflows without a verified function Skill.",
+  "category": "media-creation",
+  "capabilities": [
+    { "id": "web-search", "tool_ids": ["exa.search"] },
+    { "id": "text-to-speech", "tool_ids": ["elevenlabs.eleven-v3"] },
+    { "id": "music-generation", "tool_ids": ["elevenlabs.eleven-music-v2"] }
+  ],
+  "aliases": ["scrollport-media"],
+  "license": "MIT",
+  "instruction_path": "SKILL.md",
+  "dependencies": {
+    "scrollport_control_tools": [],
+    "catalog_tools": [
+      { "tool_id": "exa.search", "required": false, "purpose": "Used only after routing to Media Audio Edition." },
+      { "tool_id": "elevenlabs.eleven-v3", "required": false, "purpose": "Used only after routing to Media Audio Edition." },
+      { "tool_id": "elevenlabs.eleven-music-v2", "required": false, "purpose": "Used only after routing to Media Audio Edition." }
+    ],
+    "connected_apps": []
+  },
+  "inputs": [
+    "The media outcome the user wants",
+    "Any supplied source material, audience, format or publication boundary"
+  ],
+  "outputs": [
+    "One selected verified function Skill and a concise reason",
+    "A clear unavailable boundary when no verified function Skill owns the request"
+  ],
+  "cost": {
+    "currency": "USD",
+    "model": "Routing is agent-side and makes no paid call.",
+    "trial_safe_max_usd": "0.000000",
+    "notes": "The selected function Skill presents and obtains approval for its own paid plan."
+  },
+  "approvals": [
+    "Ask before installing or updating a missing function Skill; creative and paid approvals belong to the selected function Skill"
+  ],
+  "compatibility": [
+    "Agent Skills compatible host",
+    "The selected function Skill installed from the same pinned repository revision"
+  ],
+  "evidence": {
+    "verified_at": "2026-08-31",
+    "review_due_at": "2026-09-30",
+    "summary_path": "evidence/2026-08-31-routing-verification.md"
+  }
+}
