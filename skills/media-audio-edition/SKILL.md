@@ -12,9 +12,6 @@ Turn written content into a concise episode written for the ear. The agent
 adapts rather than reads verbatim, the human approves the script before any
 audio spend, and scrollport supplies bounded narration and music primitives.
 
-Narration and music both have a validated, live supplier, and the narration
-bake-off is adopted (Alan, 1 Aug): **one voice on Eleven v3**.
-
 Use the five Scrollport control tools and only catalog tools that `discover`
 currently returns as live.
 
@@ -46,11 +43,10 @@ expected launch tool ids are:
 - `elevenlabs.eleven-v3` for narration — **one voice on Eleven v3**;
 - `elevenlabs.eleven-music-v2` for one bounded instrumental sting.
 
-**Narration default: a single narrator on Eleven v3** (Alan, 1 Aug, closing the
-#14 bake-off). Use `elevenlabs.eleven-v3` with the **same `voice_id` on every
-turn**. The catalog tool is named for its multi-speaker shape, but a single
-speaker is the adopted route: v3 is the expressive model, and one narrator is
-what an episode wants.
+**Narration default: a single narrator on Eleven v3.** Use
+`elevenlabs.eleven-v3` with the **same `voice_id` on every turn**. The catalog
+tool is named for its multi-speaker shape, but a single speaker is the adopted
+route: v3 is the expressive model, and one narrator is what an episode wants.
 
 It is also the cheaper option, which is not obvious. Eleven v3 bills about
 0.275 characters per input character, so 1,000 script characters cost roughly
@@ -149,6 +145,12 @@ as an undeclared fallback.
 On resume, verify the saved script hash still matches the approved script, then
 poll all non-terminal run ids. Reuse downloaded successful chunks. A completed
 episode reports:
+
+On a terminal narration or music failure, preserve successful artifacts and the
+approved plan before correcting input or requesting a replacement run. If
+provider execution is uncertain, inspect the existing run before retrying.
+Assembly failures are local: retry assembly without regenerating narration or
+music.
 
 - source and any added citations;
 - approved script hash, character count and duration;
