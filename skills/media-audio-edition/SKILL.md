@@ -142,15 +142,15 @@ as an undeclared fallback.
 
 ## Resume and completion
 
-On resume, verify the saved script hash still matches the approved script, then
-poll all non-terminal run ids. Reuse downloaded successful chunks. A completed
-episode reports:
-
 On a terminal narration or music failure, preserve successful artifacts and the
 approved plan before correcting input or requesting a replacement run. If
 provider execution is uncertain, inspect the existing run before retrying.
 Assembly failures are local: retry assembly without regenerating narration or
 music.
+
+On resume, verify the saved script hash still matches the approved script, then
+poll all non-terminal run ids. Reuse downloaded successful chunks. A completed
+episode reports:
 
 - source and any added citations;
 - approved script hash, character count and duration;
