@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "media-audio-edition",
   "title": "Audio Edition",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "status": "verified",
   "customer_proven": false,
   "summary": "Adapt written content into a human-approved, non-truncated MP3 with narration, a music sting and an optional agent-side audiogram.",

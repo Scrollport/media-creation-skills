@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2 — 2026-09-01
+
+- Keep terminal-failure recovery separate from the completed-episode report.
+
 ## 2.0.1 — 2026-09-01
 
 - Record a fresh human listen-check of the assembled synthetic rehearsal.
