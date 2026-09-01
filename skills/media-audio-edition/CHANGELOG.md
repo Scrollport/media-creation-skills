@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1 — 2026-09-01
+
+- Record a fresh human listen-check of the assembled synthetic rehearsal.
+- Clarify terminal-failure recovery without repeating maintainer provenance in
+  the runtime instructions.
+
 ## 2.0.0 — 2026-08-31
 
 - Move the canonical package into the Media creation category repository.

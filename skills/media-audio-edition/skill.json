@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "media-audio-edition",
   "title": "Audio Edition",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "status": "verified",
   "customer_proven": false,
   "summary": "Adapt written content into a human-approved, non-truncated MP3 with narration, a music sting and an optional agent-side audiogram.",
@@ -65,7 +65,8 @@
     "Local audio concatenation for multi-chunk episodes or an audiogram"
   ],
   "evidence": {
-    "verified_at": "2026-08-01",
-    "review_due_at": "2026-09-01"
+    "verified_at": "2026-09-01",
+    "review_due_at": "2026-10-01",
+    "summary_path": "evidence/2026-09-01-human-review.md"
   }
 }
