@@ -4,12 +4,6 @@
   "repository": "https://github.com/Scrollport/media-creation-skills",
   "skills": [
     {
-      "id": "media-creation",
-      "path": "skills/media-creation",
-      "status": "verified",
-      "customer_proven": false
-    },
-    {
       "id": "media-audio-edition",
       "path": "skills/media-audio-edition",
       "status": "verified",

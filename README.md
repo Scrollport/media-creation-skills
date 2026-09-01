@@ -7,10 +7,9 @@ powered by [Scrollport](https://scrollport.com).
 
 | If you need to... | Use |
 | --- | --- |
-| Choose an available media workflow | [`media-creation`](skills/media-creation/SKILL.md) |
 | Adapt written content into narration, music and an MP3 | [`media-audio-edition`](skills/media-audio-edition/SKILL.md) |
 
-Audio Edition is the first verified function Skill. Image and video generation
+Audio Edition is the first published outcome Skill. Image and video generation
 belong in this category, but they will appear only after a specific outcome has
 an explicit input contract, review checkpoint, recovery path and inspectable
 example output.
@@ -21,13 +20,14 @@ example output.
 - Provider success is not accepted without inspecting or listening to the
   artifact.
 - Feed hosting, publication and distribution are separate actions.
-- The router does not substitute a generic generation call for an unavailable
-  outcome Skill.
+- A generic generation call does not substitute for an unavailable outcome
+  Skill.
 
 ## Install and contribute
 
-Choose one function Skill or install the router first; see
-[INSTALL.md](INSTALL.md) for pinned installation and readiness checks.
+Install the complete package; see [INSTALL.md](INSTALL.md) for pinned
+installation and readiness checks. Native Skill discovery selects the relevant
+outcome Skill for each request.
 Published Skills live under `skills/`, while unverified work stays under
 `candidates/`. See [the authoring contract](docs/AUTHORING.md),
 [contribution guide](CONTRIBUTING.md) and [security policy](SECURITY.md).
