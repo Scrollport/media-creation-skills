@@ -75,7 +75,7 @@ tool is the exact executable implementation. Every Skill therefore declares:
   catalog `tool_ids` that supply it; and
 - no free-form Skill tags or secondary categories.
 
-Choose the category from `sales-prospecting`, `media-creation`, `seo-search`,
+Choose the category from `sales-prospecting`, `media-creation`, `search-seo`,
 `web-research-extraction`, `finance`, `ecommerce`, `social-media` or
 `connected-apps`. A Skill that crosses several areas still has one primary
 category; its capability associations show how the workflow is composed. Every
@@ -190,3 +190,21 @@ A completed skill records the exact tool ids, run ids, final costs,
 artifact or destination references, and the human checkpoints obtained. It also
 states any skipped optional step. “The request succeeded” is not enough: inspect
 the returned data or artifact for the semantic outcome the skill promised.
+
+## Maintaining published Skills
+
+On a tool-contract change, failed acceptance check or due review, inspect the
+required route and the affected method. Reuse retained results when they prove
+the unchanged outcome; run a bounded rehearsal when the method or output needs
+new evidence. Never extend review dates from a successful metadata check alone.
+The validator rejects invalid and overdue reviews before a build or release.
+
+If a Skill cannot be reverified, move it to `candidates/<id>/DRAFT.md`, set both
+registry and manifest status to `draft`, and remove it from the website source
+selection when regenerating exports. Preserve its history and explain the
+withdrawal in the release. For a renamed equivalent outcome, retain the former
+id as an alias; do not redirect a retired outcome to an unrelated Skill.
+
+Each published Skill's category uses the repository name without `-skills`.
+Capability and tool ids retain their own identities. A category URL or repository
+rename never requires renaming an unchanged outcome Skill.

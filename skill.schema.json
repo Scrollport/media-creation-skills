@@ -23,7 +23,7 @@
     "boundary": { "type": "string", "minLength": 1 },
     "category": {
       "enum": [
-        "sales-prospecting", "media-creation", "seo-search",
+        "sales-prospecting", "media-creation", "search-seo",
         "web-research-extraction", "finance", "ecommerce",
         "social-media", "connected-apps"
       ]

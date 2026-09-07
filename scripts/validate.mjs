@@ -7,7 +7,7 @@ const SEMVER = /^[0-9]+\.[0-9]+\.[0-9]+$/;
 const SKILL_CATEGORIES = new Set([
   "sales-prospecting",
   "media-creation",
-  "seo-search",
+  "search-seo",
   "web-research-extraction",
   "finance",
   "ecommerce",
@@ -68,7 +68,7 @@ function validateLinks(file, root, errors) {
   }
 }
 
-function validateManifest(root, entry, errors) {
+function validateManifest(root, entry, errors, now, repository) {
   if (!SKILL_ID.test(entry.id ?? "")) errors.push(`registry: invalid skill id ${entry.id}`);
   if (!entry.path || !existsSync(join(root, entry.path))) {
     errors.push(`registry: missing path for ${entry.id}: ${entry.path}`);
@@ -105,6 +105,9 @@ function validateManifest(root, entry, errors) {
   if (!SEMVER.test(manifest.version ?? "")) errors.push(`${entry.id}: version must be semantic x.y.z`);
   if (manifest.license !== "MIT") errors.push(`${entry.id}: license must be MIT`);
   if (!SKILL_CATEGORIES.has(manifest.category)) errors.push(`${entry.id}: category must be a canonical Scrollport category`);
+  if (entry.status === "verified" && repository !== `https://github.com/Scrollport/${manifest.category}-skills`) {
+    errors.push(`${entry.id}: published category must match its owning repository`);
+  }
 
   const instruction = join(root, entry.path, manifest.instruction_path ?? "");
   if (!existsSync(instruction)) errors.push(`${entry.id}: missing instruction file ${manifest.instruction_path}`);
@@ -114,8 +117,13 @@ function validateManifest(root, entry, errors) {
 
   if (entry.status === "verified") {
     if (manifest.instruction_path !== "SKILL.md") errors.push(`${entry.id}: verified instruction must be SKILL.md`);
-    if (!manifest.evidence?.verified_at || !manifest.evidence?.review_due_at) {
-      errors.push(`${entry.id}: verified skills require a verification date and review due date`);
+    const { verified_at: verified, review_due_at: due } = manifest.evidence ?? {};
+    const validDate = (value) => typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)
+      && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
+    if (!validDate(verified) || !validDate(due) || due < verified) {
+      errors.push(`${entry.id}: verified skills require valid, ordered verification and review dates`);
+    } else if (verified > now.toISOString().slice(0, 10) || due < now.toISOString().slice(0, 10)) {
+      errors.push(`${entry.id}: verification is future-dated or review is overdue; reverify or withhold before publication`);
     }
   } else {
     if (existsSync(join(root, entry.path, "SKILL.md"))) errors.push(`${entry.id}: draft candidates must not contain SKILL.md`);
@@ -206,7 +214,7 @@ function validateManifest(root, entry, errors) {
   }
 }
 
-export function validateRepository(rootPath) {
+export function validateRepository(rootPath, { now = new Date() } = {}) {
   const root = resolve(rootPath);
   const errors = [];
   const registryPath = join(root, "registry.json");
@@ -223,7 +231,7 @@ export function validateRepository(rootPath) {
   for (const entry of registry.skills ?? []) {
     if (seen.has(entry.id)) errors.push(`registry: duplicate id ${entry.id}`);
     seen.add(entry.id);
-    validateManifest(root, entry, errors);
+    validateManifest(root, entry, errors, now, registry.repository);
   }
 
   for (const file of listFiles(root)) {

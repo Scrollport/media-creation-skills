@@ -44,6 +44,12 @@ Scrollport connection and required dependencies have all been checked.
    `path`, `version`, dependency declarations and `instruction_path`. Do not
    silently substitute a later branch head or a different release.
 
+Before installing, read each selected `skill.json`: it must still be `verified`,
+its verification and review dates must be valid and current, and its required
+tools must be available. Do not install an overdue or withdrawn Skill from an
+older pin to bypass a failed readiness check. Report the affected Skill and let
+the user continue with available Skills or direct tools.
+
 ### Choose one installation method
 
 Identify the current agent host, its active Skill directory and whether the
