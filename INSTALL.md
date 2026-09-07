@@ -44,11 +44,15 @@ Scrollport connection and required dependencies have all been checked.
    `path`, `version`, dependency declarations and `instruction_path`. Do not
    silently substitute a later branch head or a different release.
 
-Before installing, read each selected `skill.json`: it must still be `verified`,
-its verification and review dates must be valid and current, and its required
-tools must be available. Do not install an overdue or withdrawn Skill from an
-older pin to bypass a failed readiness check. Report the affected Skill and let
-the user continue with available Skills or direct tools.
+Before installing, separately resolve the repository's current default-branch
+SHA and read its registry and selected `skill.json` files as a withdrawal check.
+Both current and requested manifests must be `verified` with valid, current
+review dates. If the current entry is absent, withdrawn or overdue, stop that
+Skill's installation. If this check is unavailable, report it and do not claim
+readiness; never use an old pin to bypass it. Keep the requested installation
+SHA: do not silently upgrade it. If its version differs from the current
+manifest, report the update and do not attribute current verification to the
+older version. Check required live tools after connecting below.
 
 ### Choose one installation method
 
