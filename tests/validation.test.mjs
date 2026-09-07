@@ -14,7 +14,7 @@ function fixture({ frontmatter = true, secret = false, undeclared = false, mutat
   mkdirSync(skillDir, { recursive: true });
   const credential = secret ? `sp_${"live"}_${"A".repeat(24)}` : "ordinary-state";
   const dependencyLine = undeclared ? "Use `other.lookup`." : "Use `demo.lookup`.";
-  writeFileSync(join(dir, "registry.json"), JSON.stringify({ schema_version: 2, repository: "https://github.com/Scrollport/media-creation-skills", skills: [{ id: "fixture-skill", path: "skills/fixture-skill", status: "verified", customer_proven: false }] }));
+  writeFileSync(join(dir, "registry.json"), JSON.stringify({ schema_version: 2, repository: "https://github.com/Scrollport/web-research-extraction-skills", skills: [{ id: "fixture-skill", path: "skills/fixture-skill", status: "verified", customer_proven: false }] }));
   const manifest = {
     schema_version: 2,
     id: "fixture-skill",
@@ -40,7 +40,7 @@ function fixture({ frontmatter = true, secret = false, undeclared = false, mutat
     cost: { currency: "USD", model: "Per call", trial_safe_max_usd: "0.010000", notes: "Fixture" },
     approvals: ["Approve cost"],
     compatibility: ["Agent Skills host"],
-    evidence: { verified_at: "2026-08-27", review_due_at: "2026-09-27", summary_path: "EVIDENCE.md", customer_proof_path: null },
+    evidence: { verified_at: new Date().toISOString().slice(0, 10), review_due_at: new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10), summary_path: "EVIDENCE.md", customer_proof_path: null },
   };
   mutateManifest?.(manifest);
   writeFileSync(join(skillDir, "skill.json"), JSON.stringify(manifest));
@@ -128,4 +128,28 @@ test("Audio Edition is canonical without a package router", () => {
 test("Audio Edition keeps the former public id as an alias", () => {
   const manifest = JSON.parse(readFileSync(join(root, "skills", "media-audio-edition", "skill.json"), "utf8"));
   assert(manifest.aliases.includes("scrollport-audio-edition"));
+});
+
+// A due date remains current through the end of that UTC day.
+test("publication rejects invalid, future and overdue verification", () => {
+  const now = new Date("2026-09-07T23:59:59Z");
+  for (const [verified_at, review_due_at, valid] of [
+    ["2026-09-01", "2026-09-07", true],
+    ["2026-09-01", "2026-09-06", false],
+    ["2026-09-08", "2026-10-08", false],
+    ["2026-09-07", "2026-09-01", false],
+    ["2026-02-30", "2026-10-01", false],
+  ]) {
+    const dir = fixture({ mutateManifest: (manifest) => { manifest.evidence = { verified_at, review_due_at }; } });
+    assert.equal(validateRepository(dir, { now }).length === 0, valid, `${verified_at} / ${review_due_at}`);
+  }
+  const aligned = fixture({ mutateManifest: (manifest) => { manifest.category = "search-seo"; } });
+  const registry = JSON.parse(readFileSync(join(aligned, "registry.json"), "utf8"));
+  registry.repository = "https://github.com/Scrollport/search-seo-skills";
+  writeFileSync(join(aligned, "registry.json"), JSON.stringify(registry));
+  assert.deepEqual(validateRepository(aligned), []);
+  registry.repository = "https://github.com/Scrollport/media-creation-skills";
+  writeFileSync(join(aligned, "registry.json"), JSON.stringify(registry));
+  assert(validateRepository(aligned).some((error) => error.includes("must match its owning repository")));
+  assert(validateRepository(fixture({ mutateManifest: (manifest) => { manifest.category = "seo-search"; } })).length > 0);
 });

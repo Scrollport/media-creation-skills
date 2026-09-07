@@ -48,16 +48,10 @@ expected launch tool ids are:
 tool is named for its multi-speaker shape, but a single speaker is the adopted
 route: v3 is the expressive model, and one narrator is what an episode wants.
 
-It is also the cheaper option, which is not obvious. Eleven v3 bills about
-0.275 characters per input character, so 1,000 script characters cost roughly
-275 billed characters at \$0.14 per 1,000 — about \$0.0385, against \$0.07 for
-the same script through Flash at \$0.07 per 1,000. Better and cheaper, at
-today's billing.
-
-That ratio is measured, not contractual. If it reverts to 1:1, v3 becomes
-\$0.14 per 1,000 script characters — double Flash — and the choice is worth
-revisiting rather than assumed. `usage.meta` on every run records the billed
-count beside the input count, so the change would be visible in the run itself.
+Quote narration from the current inspected per-unit price and the complete
+input character count. Never discount the approved maximum using a historical
+billed-to-input ratio: a smaller settled charge is an observation, not a price
+guarantee. Record the final billed units and cost after each successful run.
 
 Two voices remain available through the same capability by varying `voice_id`
 per turn, but that is a deliberate departure from the default, not a fallback.
