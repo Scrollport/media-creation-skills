@@ -14,7 +14,7 @@ const SKILL_CATEGORIES = new Set([
   "social-media",
   "connected-apps",
 ]);
-const CONTROL_TOOLS = new Set(["apps", "discover", "inspect", "run", "wallet"]);
+const CONTROL_TOOLS = new Set(["search_tools", "inspect_tool", "run_tool", "get_run", "list_apps", "get_wallet"]);
 const NON_TOOL_DOTTED_TERMS = new Set(["usage.meta", "provider.action"]);
 const SECRET_PATTERNS = [
   [/sp_(?:live|at|rt|oc)_[A-Za-z0-9_-]{8,}/g, "Scrollport credential"],

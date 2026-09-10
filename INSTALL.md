@@ -97,15 +97,15 @@ an installer's default agent or an unpinned default branch.
 
 ### Connect Scrollport and check dependencies
 
-1. Check whether Scrollport's five control tools — `apps`, `discover`,
-   `inspect`, `run` and `wallet` — are available. If not, follow
+1. Check whether Scrollport's six control tools — `list_apps`, `search_tools`,
+   `inspect_tool`, `run_tool`, `get_run` and `get_wallet` — are available. If not, follow
    [Scrollport setup](https://scrollport.com/start). Never ask the human to paste
    a Scrollport credential into chat.
-2. Verify the connection with the free `wallet` or `discover` tool.
-3. Use `discover` and `inspect` to confirm every required catalog dependency in
+2. Verify the connection with the free `get_wallet` or `search_tools` tool.
+3. Use `search_tools` and `inspect_tool` to confirm every required catalog dependency in
    the registry entry. Required dependencies block readiness; optional ones do
    not.
-4. Use `apps` to check declared connected-app dependencies. Ask the human to
+4. Use `list_apps` to check declared connected-app dependencies. Ask the human to
    authorise a missing account through Scrollport before treating it as ready.
 5. If the installed Skill requires host-side software, explain why and ask
    before installing it.

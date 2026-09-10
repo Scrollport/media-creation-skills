@@ -6,13 +6,15 @@ metadata:
   scrollport-status: verified
 ---
 
+Use `get_run({ run_id, wait_seconds? })` to read a saved run before any retry; no idempotency key is accepted. Waiting defaults to 50 seconds and accepts 0–120. `run_tool` starts only and requires `tool_id`, `input` and one UUID per paid intent; retain that UUID for an exact retry after an uncertain start. Every state retains `run_id`.
+
 # Audio Edition
 
 Turn written content into a concise episode written for the ear. The agent
 adapts rather than reads verbatim, the human approves the script before any
 audio spend, and scrollport supplies bounded narration and music primitives.
 
-Use the five Scrollport control tools and only catalog tools that `discover`
+Use the six Scrollport control tools and only catalog tools that `search_tools`
 currently returns as live.
 
 ## Inputs and safe default

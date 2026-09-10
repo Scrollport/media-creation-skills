@@ -57,7 +57,7 @@
       "properties": {
         "scrollport_control_tools": {
           "type": "array",
-          "items": { "enum": ["apps", "discover", "inspect", "run", "wallet"] },
+          "items": { "enum": ["search_tools", "inspect_tool", "run_tool", "get_run", "list_apps", "get_wallet"] },
           "uniqueItems": true
         },
         "catalog_tools": {
