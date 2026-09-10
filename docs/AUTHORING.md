@@ -6,7 +6,7 @@
 > references that the workflow actually needs.
 
 A Scrollport Skill is a curated, versioned and installable workflow an agent
-executes with the five public control tools. It is not server-side orchestration
+executes with the six public control tools. It is not server-side orchestration
 and it never grants authority beyond the connection, wallet and provider
 connections the human already approved. A capability prompt, useful workflow
 note or Resources article is not automatically a Skill.

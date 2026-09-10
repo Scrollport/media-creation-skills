@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "media-audio-edition",
   "title": "Audio Edition",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "status": "verified",
   "customer_proven": false,
   "summary": "Adapt written content into a human-approved, non-truncated MP3 with narration, a music sting and an optional agent-side audiogram.",
@@ -19,7 +19,7 @@
   "license": "MIT",
   "instruction_path": "SKILL.md",
   "dependencies": {
-    "scrollport_control_tools": ["apps", "discover", "inspect", "run", "wallet"],
+    "scrollport_control_tools": ["search_tools", "inspect_tool", "run_tool", "get_run", "list_apps", "get_wallet"],
     "catalog_tools": [
       {
         "tool_id": "exa.search",
