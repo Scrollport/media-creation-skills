@@ -97,8 +97,9 @@ an installer's default agent or an unpinned default branch.
 
 ### Connect Scrollport and check dependencies
 
-1. Check whether Scrollport's six control tools — `list_apps`, `search_tools`,
-   `inspect_tool`, `run_tool`, `get_run` and `get_wallet` — are available. If not, follow
+1. Check whether Scrollport's nine control tools — `list_apps`, `search_tools`,
+   `inspect_tool`, `run_tool`, `get_run`, `get_wallet`, `get_files`, `upload_file`
+   and `delete_file` — are available. If not, follow
    [Scrollport setup](https://scrollport.com/start). Never ask the human to paste
    a Scrollport credential into chat.
 2. Verify the connection with the free `get_wallet` or `search_tools` tool.

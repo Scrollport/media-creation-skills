@@ -14,7 +14,7 @@ Turn written content into a concise episode written for the ear. The agent
 adapts rather than reads verbatim, the human approves the script before any
 audio spend, and scrollport supplies bounded narration and music primitives.
 
-Use the six Scrollport control tools and only catalog tools that `search_tools`
+Use the Scrollport control tools and only catalog tools that `search_tools`
 currently returns as live.
 
 ## Inputs and safe default
