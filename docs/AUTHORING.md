@@ -197,7 +197,10 @@ On a tool-contract change, failed acceptance check or due review, inspect the
 required route and the affected method. Reuse retained results when they prove
 the unchanged outcome; run a bounded rehearsal when the method or output needs
 new evidence. Never extend review dates from a successful metadata check alone.
-The validator rejects invalid and overdue reviews before a build or release.
+The validator rejects invalid or future-dated verification. An overdue review
+withholds only that Skill: the build leaves it out of the export and records it
+in `dist/withheld.json`, while the repository's other Skills still build,
+release and reach the website. Reverify it to publish it again.
 
 If a Skill cannot be reverified, move it to `candidates/<id>/DRAFT.md`, set both
 registry and manifest status to `draft`, and remove it from the website source
