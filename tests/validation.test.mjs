@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { validateRepository } from "../scripts/validate.mjs";
+import { checkRepository, validateRepository } from "../scripts/validate.mjs";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 
@@ -131,17 +131,19 @@ test("Audio Edition keeps the former public id as an alias", () => {
 });
 
 // A due date remains current through the end of that UTC day.
-test("publication rejects invalid, future and overdue verification", () => {
+test("publication rejects invalid and future verification and withholds an overdue review", () => {
   const now = new Date("2026-09-07T23:59:59Z");
-  for (const [verified_at, review_due_at, valid] of [
-    ["2026-09-01", "2026-09-07", true],
-    ["2026-09-01", "2026-09-06", false],
-    ["2026-09-08", "2026-10-08", false],
-    ["2026-09-07", "2026-09-01", false],
-    ["2026-02-30", "2026-10-01", false],
+  for (const [verified_at, review_due_at, valid, withheld] of [
+    ["2026-09-01", "2026-09-07", true, false],
+    ["2026-09-01", "2026-09-06", true, true],
+    ["2026-09-08", "2026-10-08", false, false],
+    ["2026-09-07", "2026-09-01", false, false],
+    ["2026-02-30", "2026-10-01", false, false],
   ]) {
     const dir = fixture({ mutateManifest: (manifest) => { manifest.evidence = { verified_at, review_due_at }; } });
-    assert.equal(validateRepository(dir, { now }).length === 0, valid, `${verified_at} / ${review_due_at}`);
+    const result = checkRepository(dir, { now });
+    assert.equal(result.errors.length === 0, valid, `${verified_at} / ${review_due_at}`);
+    assert.equal(result.withheld.some((skill) => skill.id === "fixture-skill" && skill.reason === "review_overdue"), withheld, `withheld ${verified_at} / ${review_due_at}`);
   }
   const aligned = fixture({ mutateManifest: (manifest) => { manifest.category = "search-seo"; } });
   const registry = JSON.parse(readFileSync(join(aligned, "registry.json"), "utf8"));

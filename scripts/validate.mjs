@@ -68,7 +68,7 @@ function validateLinks(file, root, errors) {
   }
 }
 
-function validateManifest(root, entry, errors, now, repository) {
+function validateManifest(root, entry, errors, now, repository, withheld) {
   if (!SKILL_ID.test(entry.id ?? "")) errors.push(`registry: invalid skill id ${entry.id}`);
   if (!entry.path || !existsSync(join(root, entry.path))) {
     errors.push(`registry: missing path for ${entry.id}: ${entry.path}`);
@@ -122,8 +122,12 @@ function validateManifest(root, entry, errors, now, repository) {
       && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
     if (!validDate(verified) || !validDate(due) || due < verified) {
       errors.push(`${entry.id}: verified skills require valid, ordered verification and review dates`);
-    } else if (verified > now.toISOString().slice(0, 10) || due < now.toISOString().slice(0, 10)) {
-      errors.push(`${entry.id}: verification is future-dated or review is overdue; reverify or withhold before publication`);
+    } else if (verified > now.toISOString().slice(0, 10)) {
+      errors.push(`${entry.id}: verification is future-dated`);
+    } else if (due < now.toISOString().slice(0, 10)) {
+      // An overdue review withholds only this Skill. The build leaves it out
+      // and records why; the repository's other Skills still build and release.
+      withheld.push({ id: entry.id, reason: "review_overdue", review_due_at: due });
     }
   } else {
     if (existsSync(join(root, entry.path, "SKILL.md"))) errors.push(`${entry.id}: draft candidates must not contain SKILL.md`);
@@ -214,24 +218,30 @@ function validateManifest(root, entry, errors, now, repository) {
   }
 }
 
-export function validateRepository(rootPath, { now = new Date() } = {}) {
+/**
+ * Structural errors fail the repository. Verified Skills whose review is
+ * overdue are returned as `withheld` instead, so one stale Skill never blocks
+ * the others from building, releasing or reaching the website.
+ */
+export function checkRepository(rootPath, { now = new Date() } = {}) {
   const root = resolve(rootPath);
   const errors = [];
+  const withheld = [];
   const registryPath = join(root, "registry.json");
-  if (!existsSync(registryPath)) return ["missing registry.json"];
+  if (!existsSync(registryPath)) return { errors: ["missing registry.json"], withheld };
 
   let registry;
   try {
     registry = JSON.parse(readFileSync(registryPath, "utf8"));
   } catch (error) {
-    return [`invalid registry.json: ${error.message}`];
+    return { errors: [`invalid registry.json: ${error.message}`], withheld };
   }
   if (registry.schema_version !== 2 || !Array.isArray(registry.skills)) errors.push("registry: unsupported schema or missing skills array");
   const seen = new Set();
   for (const entry of registry.skills ?? []) {
     if (seen.has(entry.id)) errors.push(`registry: duplicate id ${entry.id}`);
     seen.add(entry.id);
-    validateManifest(root, entry, errors, now, registry.repository);
+    validateManifest(root, entry, errors, now, registry.repository, withheld);
   }
 
   for (const file of listFiles(root)) {
@@ -248,19 +258,24 @@ export function validateRepository(rootPath, { now = new Date() } = {}) {
       }
     }
   }
-  return [...new Set(errors)].sort();
+  return { errors: [...new Set(errors)].sort(), withheld: withheld.sort((a, b) => a.id.localeCompare(b.id)) };
+}
+
+export function validateRepository(rootPath, options = {}) {
+  return checkRepository(rootPath, options).errors;
 }
 
 function main() {
   const root = resolve(process.argv[2] ?? join(dirname(fileURLToPath(import.meta.url)), ".."));
-  const errors = validateRepository(root);
+  const { errors, withheld } = checkRepository(root);
+  for (const skill of withheld) console.warn(`WITHHELD ${skill.id}: review overdue since ${skill.review_due_at}; reverify to publish it again`);
   if (errors.length) {
     for (const error of errors) console.error(`ERROR ${error}`);
     process.exitCode = 1;
   } else {
     const registry = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
-    const published = registry.skills.filter((skill) => skill.status === "verified").length;
-    console.log(`Validated ${registry.skills.length} entries; ${published} published.`);
+    const published = registry.skills.filter((skill) => skill.status === "verified").length - withheld.length;
+    console.log(`Validated ${registry.skills.length} entries; ${published} published${withheld.length ? `, ${withheld.length} withheld` : ""}.`);
   }
 }
 

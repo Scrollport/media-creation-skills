@@ -2,11 +2,12 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 import { join, resolve } from "node:path";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
-import { validateRepository } from "./validate.mjs";
+import { checkRepository } from "./validate.mjs";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const errors = validateRepository(root);
+const { errors, withheld } = checkRepository(root);
 if (errors.length) throw new Error(`Cannot build invalid Skills repository:\n${errors.join("\n")}`);
+const withheldIds = new Set(withheld.map((skill) => skill.id));
 
 const out = join(root, "dist");
 rmSync(out, { recursive: true, force: true });
@@ -15,7 +16,7 @@ cpSync(join(root, "INSTALL.md"), join(out, "INSTALL.md"));
 
 const source = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
 const published = [];
-for (const entry of source.skills.filter((skill) => skill.status === "verified").sort((a, b) => a.id.localeCompare(b.id))) {
+for (const entry of source.skills.filter((skill) => skill.status === "verified" && !withheldIds.has(skill.id)).sort((a, b) => a.id.localeCompare(b.id))) {
   const sourceDir = join(root, entry.path);
   const targetDir = join(out, "skills", entry.id);
   const manifest = JSON.parse(readFileSync(join(sourceDir, "skill.json"), "utf8"));
@@ -47,4 +48,7 @@ const registry = {
   skills: published,
 };
 writeFileSync(join(out, "registry.json"), `${JSON.stringify(registry, null, 2)}\n`);
+// Consumers (the website aggregator) read why a requested Skill is absent.
+writeFileSync(join(out, "withheld.json"), `${JSON.stringify({ schema_version: 1, skills: withheld }, null, 2)}\n`);
+for (const skill of withheld) console.warn(`Withheld ${skill.id}: review overdue since ${skill.review_due_at}.`);
 console.log(`Built ${published.length} published Skill export${published.length === 1 ? "" : "s"}.`);
