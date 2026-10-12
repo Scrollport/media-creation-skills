@@ -1,7 +1,7 @@
 # Audio Edition reverification — 2026-10-12
 
-Status: **Machine checks passed; maintainer listen-check pending. This note does
-not extend the review dates.**
+Status: **Machine checks and maintainer listen-check passed; next review due
+2026-11-11.**
 
 ## Brief
 
@@ -86,7 +86,7 @@ not extend the review dates.**
 
 Local assembly and the audiogram created no Scrollport run.
 
-## Pending human judgement
+## Human judgement
 
 Machine checks cannot show that the speech matches the script, that no word is
 clipped, or that the result is acceptable. The Skill's completion contract and
@@ -104,8 +104,13 @@ to listen to the assembled episode and confirm:
 7. the script itself is acceptable, since it was not approved before generation.
 
 The optional audiogram's caption timing is a separate, non-blocking judgement.
-Until that confirmation is recorded, `verified_at` and `review_due_at` stay
-unchanged and the validator keeps the overdue Skill withheld.
+
+**Result, 12 October 2026:** the product owner listened to the assembled episode
+(SHA-256 `3453157e…e535a` above) against this checklist and the script, and
+approved both without requesting changes. That confirmation sets
+`verified_at` to 2026-10-12 and `review_due_at` to 2026-11-11. The audiogram's
+caption timing was not judged separately and remains non-blocking. The review
+added no paid run; spend stays at the $0.058660 receipt above.
 
 ## Honest boundary
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.2 — 2026-10-12
+
+- Record the October reverification: a fresh two-chunk episode adapted from a
+  public NASA post passed machine checks and the maintainer listen-check.
+  Next review due 2026-11-11.
+
 ## 2.0.2 — 2026-09-01
 
 - Keep terminal-failure recovery separate from the completed-episode report.
