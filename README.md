@@ -1,27 +1,33 @@
 # Media creation Skills
 
-Agent Skills for turning approved source material into reviewable media,
-powered by [Scrollport](https://scrollport.com).
+Agent Skills that turn your writing into media you can share, powered by
+[Scrollport](https://scrollport.com).
 
 ## Start with the job
 
-| If you need to... | Use |
+| If you want to... | Use |
 | --- | --- |
-| Adapt written content into narration, music and an MP3 | [`media-audio-edition`](skills/media-audio-edition/SKILL.md) |
+| Turn a blog post or newsletter into a podcast episode, with show notes, a LinkedIn post and a short clip | [Blog Post to Podcast](skills/media-audio-edition/SKILL.md) (`media-audio-edition`) |
 
-Audio Edition is the first published outcome Skill. Image and video generation
-belong in this category, but they will appear only after a specific outcome has
-an explicit input contract, review checkpoint, recovery path and inspectable
-example output.
+Blog Post to Podcast is the first published outcome Skill. Image and video
+generation belong in this category, but they will appear only after a specific
+outcome has an explicit input contract, review checkpoint, recovery path and
+inspectable example output.
 
 ## Creative and cost boundaries
 
-- The human approves the script and generation plan before media spend.
-- Provider success is not accepted without inspecting or listening to the
-  artifact.
-- Feed hosting, publication and distribution are separate actions.
+- You approve the script, voice and maximum cost, shown together in one
+  message, before anything is spent.
+- A tool reporting success isn't enough: the audio is checked for length,
+  joins and loudness, and you're asked to listen once before you post.
+- Publishing to a podcast feed, LinkedIn or anywhere else stays your decision.
 - A generic generation call does not substitute for an unavailable outcome
   Skill.
+
+## Where it ships
+
+Blog Post to Podcast generates audio, so it ships in the OpenAI plugin.
+Anthropic's plugin directory excludes image, video and audio generation.
 
 ## Install and contribute
 

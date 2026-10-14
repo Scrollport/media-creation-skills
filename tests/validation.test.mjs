@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
@@ -115,7 +115,7 @@ test("build output excludes candidates", () => {
   assert(!source.skills.filter((entry) => entry.status === "verified").some((entry) => entry.path.startsWith("candidates/")));
 });
 
-test("Audio Edition is canonical without a package router", () => {
+test("Blog Post to Podcast (media-audio-edition) is canonical without a package router", () => {
   const source = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
   assert.deepEqual(
     source.skills.map(({ id, status, customer_proven }) => ({ id, status, customer_proven })),
@@ -125,9 +125,46 @@ test("Audio Edition is canonical without a package router", () => {
   );
 });
 
-test("Audio Edition keeps the former public id as an alias", () => {
+test("Blog Post to Podcast keeps its id and the former public id as an alias", () => {
   const manifest = JSON.parse(readFileSync(join(root, "skills", "media-audio-edition", "skill.json"), "utf8"));
+  assert.equal(manifest.id, "media-audio-edition");
+  assert.equal(manifest.title, "Blog Post to Podcast");
   assert(manifest.aliases.includes("scrollport-audio-edition"));
+});
+
+test("Blog Post to Podcast promises the whole package in plain words", () => {
+  const dir = join(root, "skills", "media-audio-edition");
+  const manifest = JSON.parse(readFileSync(join(dir, "skill.json"), "utf8"));
+  assert.equal(manifest.outcome, "Turn a post or newsletter into a narrated episode in your chosen voice, with intro music, show notes, a LinkedIn post and a short clip. You approve the script before anything is spent.");
+  assert(Number(manifest.version.split(".")[0]) >= 4, "the rename and new outputs are a major version");
+  assert(manifest.inputs.length <= 5 && manifest.outputs.length <= 5, "at most five inputs and five outputs");
+  const customerText = [
+    readFileSync(join(dir, "SKILL.md"), "utf8"),
+    JSON.stringify(manifest),
+    readFileSync(join(root, "README.md"), "utf8"),
+    ...["assets", "references"].flatMap((folder) => readdirSync(join(dir, folder)).map((name) => readFileSync(join(dir, folder, name), "utf8"))),
+  ].join("\n");
+  for (const term of [/non-truncated/i, /primitives?\b/i, /\bledger\b/i]) {
+    assert(!term.test(customerText), `engineering wording ${term} is back`);
+  }
+});
+
+test("Blog Post to Podcast gates spend on one approval and checks its audio", () => {
+  const skill = readFileSync(join(root, "skills", "media-audio-edition", "SKILL.md"), "utf8");
+  for (const voice of ["Warm", "Calm", "Deep"]) assert(skill.includes(`| ${voice} |`), `${voice} voice is offered`);
+  // One message carries the script, the voice and the maximum; spending starts only after it is approved and recorded.
+  const approval = skill.slice(skill.indexOf("Ready to record. Nothing has been spent yet."));
+  for (const part of ["Voice: Warm (1 of 3)", "Maximum cost:", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);
+  assert(skill.includes("Only then start the first paid run."));
+  // Parts stay under the request limit, the sting is trimmed and checked, joins re-encode and loudness is measured.
+  assert(skill.includes("at or under 1,900 characters"));
+  assert(skill.includes('"music_length_ms": 7000') && skill.includes("atrim=0:5"));
+  assert(skill.includes("-f concat") && skill.includes("libmp3lame") && skill.includes("I=-16") && skill.includes("ebur128"));
+  // A lost response is retried without paying twice; a deliberate repeat is explicit.
+  assert(skill.includes("without `--new`") && skill.includes("idempotency_key"));
+  // The result opens with the summary and ends with the Details appendix.
+  const result = skill.indexOf("Episode ready:");
+  assert(result > 0 && skill.indexOf("\nDetails\n", result) > result);
 });
 
 // A due date remains current through the end of that UTC day.

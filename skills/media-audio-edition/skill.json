@@ -2,67 +2,73 @@
   "$schema": "../../skill.schema.json",
   "schema_version": 2,
   "id": "media-audio-edition",
-  "title": "Audio Edition",
-  "version": "3.0.2",
+  "title": "Blog Post to Podcast",
+  "version": "4.0.0",
   "status": "verified",
   "customer_proven": false,
-  "summary": "Adapt written content into a human-approved, non-truncated MP3 with narration, a music sting and an optional agent-side audiogram.",
-  "outcome": "A human-approved, non-truncated MP3 that matches a broadcast script, plus an optional locally assembled audiogram.",
-  "boundary": "The Skill does not host or publish a podcast feed, bypass paywalls, choose unapproved content, or spend on audio before script approval.",
+  "summary": "Pick one of three voices, approve the script, and get your post back as a podcast episode with intro music, a transcript, show notes, a LinkedIn post and an optional 45-second clip.",
+  "outcome": "Turn a post or newsletter into a narrated episode in your chosen voice, with intro music, show notes, a LinkedIn post and a short clip. You approve the script before anything is spent.",
+  "boundary": "It doesn't publish anything, host a podcast feed or post to LinkedIn; get past paywalls or logins; narrate a post you may not use; or spend anything before you approve the script, voice and maximum cost. The clip is made only when your computer can draw captions.",
   "category": "media-creation",
   "capabilities": [
-    { "id": "web-search", "tool_ids": ["exa.search"] },
-    { "id": "text-to-speech", "tool_ids": ["elevenlabs.eleven-v3"] },
+    { "id": "text-to-speech", "tool_ids": ["elevenlabs.eleven-v3", "elevenlabs.eleven-flash-v2-5"] },
+    { "id": "dialogue-generation", "tool_ids": ["elevenlabs.eleven-v3"] },
     { "id": "music-generation", "tool_ids": ["elevenlabs.eleven-music-v2"] }
   ],
   "aliases": ["scrollport-audio-edition", "audio-edition"],
   "license": "MIT",
   "instruction_path": "SKILL.md",
   "dependencies": {
-    "scrollport_control_tools": ["search_tools", "inspect_tool", "run_tool", "get_run", "list_apps", "get_wallet"],
+    "scrollport_control_tools": ["search_tools", "inspect_tool", "run_tool", "get_run", "get_wallet"],
     "catalog_tools": [
-      {
-        "tool_id": "exa.search",
-        "required": false,
-        "purpose": "Retrieve or enrich a public source when the host cannot fetch it directly."
-      },
       {
         "tool_id": "elevenlabs.eleven-v3",
         "required": true,
-        "purpose": "Generate the approved single-narrator Eleven v3 audio."
+        "purpose": "Read the approved script aloud in the chosen voice, or as a two-voice conversation (the expressive model, used by default)."
+      },
+      {
+        "tool_id": "elevenlabs.eleven-flash-v2-5",
+        "required": false,
+        "purpose": "Read the approved script in one voice for about half the price when the user picks the fast model."
       },
       {
         "tool_id": "elevenlabs.eleven-music-v2",
         "required": true,
-        "purpose": "Generate one bounded instrumental sting."
+        "purpose": "Make the music for the 5-second intro and outro sting."
       }
     ],
     "connected_apps": []
   },
   "inputs": [
-    "Pasted written content or one public post, newsletter or RSS-item URL",
-    "Audience and tone",
-    "Pronunciation guidance for names or specialist terms"
+    "Your post: a public link, pasted text or a file (required)",
+    "Voice: Warm, Calm or Deep (default: Warm)",
+    "Episode: a full reading up to about 6 minutes (default); for longer posts a faithful excerpt or a 2-minute summary; or a two-voice conversation",
+    "Names or terms to pronounce carefully (default: none; the agent flags likely ones)",
+    "Show name for the intro and show notes (default: the blog or newsletter name)"
   ],
   "outputs": [
-    "Approved broadcast script",
-    "Narrated MP3 with a short instrumental sting",
-    "Optional agent-side audiogram and caption text"
+    "episode.mp3: your post read aloud, with a 5-second intro and outro sting and no music under the speech",
+    "transcript.md: the approved script with timestamps",
+    "show-notes.md: a summary, key points, the link to the post and a note that the voice is AI",
+    "linkedin-post.md: a LinkedIn post ready to paste",
+    "clip-45s.mp4: an optional 45-second captioned clip, made only when your computer can render it"
   ],
   "cost": {
     "currency": "USD",
-    "model": "Inspected research, narration-character and music-generation prices; local scripting and assembly are free.",
+    "model": "Narration is charged per character and the intro music per minute, at the prices Scrollport shows just before the quote. Joining, loudness, the transcript, show notes, LinkedIn post and clip are made on your computer at no cost.",
     "trial_safe_max_usd": "0.600000",
-    "notes": "Trial-safe mode limits narration to 4,000 characters, one optional source search and one three-second sting. The exact current inspected plan must remain at or below the stated maximum."
+    "notes": "At list prices inspected on 14 October 2026 (expressive voice $0.14 per 1,000 characters, fast voice $0.07, music $0.21 per minute): about $0.25 for a 90-second episode and about $0.75 for five minutes; the fast voice roughly halves the narration part. The approved maximum adds one re-take of the longest part. Trial-safe: a two-minute episode (at most 1,900 narration characters and one 7-second music request) stays within $0.60, re-take included."
   },
   "approvals": [
-    "Approve the final script, exact narration chunks, voice, sting prompt and maximum cost before the first audio run",
-    "Approve any expansion beyond the trial-safe limits"
+    "Approve the script, voice and maximum cost, shown together in one message, before any paid run; the approval time is recorded before the first run",
+    "Approve again after any change to the script, voice, model or length, and before any spend above the approved maximum",
+    "Approve in your Scrollport wallet any run that Scrollport holds for confirmation"
   ],
   "compatibility": [
-    "Agent Skills compatible host",
-    "One authorized Scrollport connection with apps, discover, inspect, run and wallet",
-    "Local audio concatenation for multi-chunk episodes or an audiogram"
+    "Agent Skills host with local files; ships in the OpenAI plugin, because Anthropic's plugin directory excludes audio generation",
+    "One Scrollport connection (CLI, MCP or HTTP) that can search, inspect, run and read the wallet",
+    "ffmpeg and ffprobe to join the parts, trim the music and set loudness; without them the parts are returned in order",
+    "An ffmpeg build with the subtitles and showwaves filters and libx264 for the optional clip"
   ],
   "evidence": {
     "verified_at": "2026-10-12",
