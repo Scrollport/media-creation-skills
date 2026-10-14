@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "media-audio-edition",
   "title": "Blog Post to Podcast",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "status": "verified",
   "customer_proven": false,
   "summary": "Pick one of three voices, approve the script, and get your post back as a podcast episode with intro music, a transcript, show notes, a LinkedIn post and an optional 45-second clip.",
@@ -57,7 +57,7 @@
     "currency": "USD",
     "model": "Narration is charged per character and the intro music per minute, at the prices Scrollport shows just before the quote. Joining, loudness, the transcript, show notes, LinkedIn post and clip are made on your computer at no cost.",
     "trial_safe_max_usd": "0.600000",
-    "notes": "At list prices inspected on 14 October 2026 (expressive voice $0.14 per 1,000 characters, fast voice $0.07, music $0.21 per minute): about $0.25 for a 90-second episode and about $0.75 for five minutes; the fast voice roughly halves the narration part. The approved maximum adds one re-take of the longest part. Trial-safe: a two-minute episode (at most 1,900 narration characters and one 7-second music request) stays within $0.60, re-take included."
+    "notes": "At list prices inspected on 14 October 2026 (expressive voice $0.14 per 1,000 characters, fast voice $0.07, music $0.21 per minute), 90 seconds of narration plans to about $0.20 and five minutes to about $0.60; the approved maximum adds a re-take of the longest part. Eleven v3 has settled at about 22% of its list price, so a five-minute episode typically costs about $0.15; the 14 October verification spent $0.17 on a six-minute episode. The fast voice roughly halves the narration part. Trial-safe: a two-minute episode (at most 1,900 narration characters and one 7-second music request) stays within $0.60, re-take included."
   },
   "approvals": [
     "Approve the script, voice and maximum cost, shown together in one message, before any paid run; the approval time is recorded before the first run",

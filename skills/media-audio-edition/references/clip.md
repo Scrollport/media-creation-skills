@@ -5,9 +5,9 @@ Use these steps only when the clip is planned: ffmpeg lists the `subtitles` and
 seconds. Everything here happens on this computer at no cost. Work in the
 episode folder, and keep file names free of spaces and colons.
 
-1. Find the clip in the episode. Its start is the lengths of the join.txt lines
-   before the clip's part, added up; its length is that part's length. Measure
-   each file with:
+1. Find the clip in the episode. Its start is 5.6 seconds (the intro sting and
+   its gap) plus the lengths of the speech.txt lines before the clip's part;
+   its length is that part's length. Measure each file with:
 
    ```
    ffprobe -v error -show_entries format=duration -of csv=p=0 work/part-03.wav

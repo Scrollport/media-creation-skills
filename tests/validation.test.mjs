@@ -151,17 +151,28 @@ test("Blog Post to Podcast promises the whole package in plain words", () => {
 
 test("Blog Post to Podcast gates spend on one approval and checks its audio", () => {
   const skill = readFileSync(join(root, "skills", "media-audio-edition", "SKILL.md"), "utf8");
+  // Compare phrases regardless of line wrapping.
+  const text = skill.replace(/\s+/g, " ");
   for (const voice of ["Warm", "Calm", "Deep"]) assert(skill.includes(`| ${voice} |`), `${voice} voice is offered`);
-  // One message carries the script, the voice and the maximum; spending starts only after it is approved and recorded.
+  // One message carries the script, the voice, the maximum and the typical spend; spending starts only after it is approved and recorded.
   const approval = skill.slice(skill.indexOf("Ready to record. Nothing has been spent yet."));
-  for (const part of ["Voice: Warm (1 of 3)", "Maximum cost:", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);
-  assert(skill.includes("Only then start the first paid run."));
-  // Parts stay under the request limit, the sting is trimmed and checked, joins re-encode and loudness is measured.
-  assert(skill.includes("at or under 1,900 characters"));
-  assert(skill.includes('"music_length_ms": 7000') && skill.includes("atrim=0:5"));
-  assert(skill.includes("-f concat") && skill.includes("libmp3lame") && skill.includes("I=-16") && skill.includes("ebur128"));
+  for (const part of ["Voice: Warm (1 of 3)", "Maximum cost:", "Typical spend:", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);
+  assert(text.includes("Only then start the first paid run."));
+  // Summary boxes that repeat the opening are skipped, and headings become short spoken transitions.
+  assert(text.includes("skip a summary box") && text.includes("short spoken transition"));
+  // Parts are evenly sized and stay under the request limit; length is estimated at 14 characters a second.
+  assert(text.includes("at or under 1,900 characters") && text.includes("all about the same size"));
+  assert(text.includes("characters ÷ 14") && !/÷ 1[56]\b/.test(text), "length uses 14 characters a second");
+  // Every part must end in quiet and gets a short end fade; the length check doesn't claim to check words.
+  assert(text.includes("areverse,atrim=0:0.05,volumedetect") && text.includes("below −40 dB for the last 50 ms"));
+  assert(text.includes("areverse,afade=t=in:d=0.05,areverse"));
+  assert(!/matched its text/i.test(text) && text.includes("it can't tell which words were read"));
+  // The sting is trimmed, checked and set 2 LU under the measured speech; the joins re-encode.
+  assert(text.includes('"music_length_ms": 7000') && text.includes("atrim=0:5"));
+  assert(text.includes("2 LU below the speech level") && text.includes("1 to 3 LU below the speech level"));
+  assert(text.includes("-f concat") && text.includes("libmp3lame") && text.includes("I=-16") && text.includes("ebur128"));
   // A lost response is retried without paying twice; a deliberate repeat is explicit.
-  assert(skill.includes("without `--new`") && skill.includes("idempotency_key"));
+  assert(text.includes("without `--new`") && text.includes("idempotency_key"));
   // The result opens with the summary and ends with the Details appendix.
   const result = skill.indexOf("Episode ready:");
   assert(result > 0 && skill.indexOf("\nDetails\n", result) > result);

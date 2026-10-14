@@ -1,5 +1,24 @@
 # Changelog
 
+## 4.1.0 — 2026-10-14
+
+Fixes from the 14 October verification of 4.0.0, whose machine checks passed
+($0.17 for a 6:02 episode at −16.4 LUFS; the listen-check is pending):
+
+- Check that each part ends in quiet (its last 50 ms below −40 dB, otherwise a
+  re-take) and fade the last 50 ms of every part, so a word cut off at a join
+  is caught.
+- Join and level the narration first, measure it, and set the sting 2 LU below
+  it. The final join no longer re-levels the whole episode, so the outro can't
+  end up louder than the voice.
+- Estimate length at 14 characters a second (about 130 words a minute), so a
+  full reading now tops out near 800 words.
+- Split the narration into evenly sized parts and show the typical spend next
+  to the list-price maximum; Eleven v3 has settled at about 22% of list.
+- Say plainly that the part check compares lengths, not words.
+- Skip summary boxes that repeat the opening, and read headings as short spoken
+  transitions or skip them.
+
 ## 4.0.0 — 2026-10-14
 
 - Rename the Skill to Blog Post to Podcast, keeping the `media-audio-edition`
