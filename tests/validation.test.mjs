@@ -135,8 +135,8 @@ test("Blog Post to Podcast keeps its id and the former public id as an alias", (
 test("Blog Post to Podcast promises the whole package in plain words", () => {
   const dir = join(root, "skills", "media-audio-edition");
   const manifest = JSON.parse(readFileSync(join(dir, "skill.json"), "utf8"));
-  assert.equal(manifest.outcome, "Turn a post or newsletter into a narrated episode in your chosen voice, with intro music, show notes, a LinkedIn post and a short clip. You approve the script before anything is spent.");
-  assert(Number(manifest.version.split(".")[0]) >= 4, "the rename and new outputs are a major version");
+  assert.equal(manifest.outcome, "Turn a post or newsletter into a podcast episode people can follow by ear: two AI hosts talk it through, with intro music, show notes, a LinkedIn post and a short clip. You approve the script before anything is spent.");
+  assert(Number(manifest.version.split(".")[0]) >= 5, "a conversation built for the ear replaced the read-aloud default, a major version");
   assert(manifest.inputs.length <= 5 && manifest.outputs.length <= 5, "at most five inputs and five outputs");
   const customerText = [
     readFileSync(join(dir, "SKILL.md"), "utf8"),
@@ -150,29 +150,37 @@ test("Blog Post to Podcast promises the whole package in plain words", () => {
 });
 
 test("Blog Post to Podcast gates spend on one approval and checks its audio", () => {
-  const skill = readFileSync(join(root, "skills", "media-audio-edition", "SKILL.md"), "utf8");
-  // Compare phrases regardless of line wrapping.
-  const text = skill.replace(/\s+/g, " ");
+  const dir = join(root, "skills", "media-audio-edition");
+  const skill = readFileSync(join(dir, "SKILL.md"), "utf8");
+  const method = readFileSync(join(dir, "references", "episode-script.md"), "utf8");
+  const joinSteps = readFileSync(join(dir, "references", "join.md"), "utf8");
+  // Compare phrases regardless of line wrapping, across the Skill and the references it follows.
+  const text = [skill, method, joinSteps].join("\n").replace(/\s+/g, " ");
   for (const voice of ["Warm", "Calm", "Deep"]) assert(skill.includes(`| ${voice} |`), `${voice} voice is offered`);
   // One message carries the script, the voice, the maximum and the typical spend; spending starts only after it is approved and recorded.
   const approval = skill.slice(skill.indexOf("Ready to record. Nothing has been spent yet."));
-  for (const part of ["Voice: Warm (1 of 3)", "Cost: about $", "The maximum assumes list price and one re-take", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);
+  for (const part of ["Voices: host Warm", "Cost: about $", "The maximum assumes list price and one re-take", "Outline (times from the first word", "Left out, listed in the show notes", "Checked:", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);
   // The typical spend comes first; the honest maximum follows it.
   assert(/Cost: about \$[0-9.]+, at most \$[0-9.]+/.test(approval), "typical spend leads the maximum");
   assert(text.includes("Only then start the first paid run."));
-  // Summary boxes that repeat the opening are skipped, and headings become short spoken transitions.
-  assert(text.includes("skip a summary box") && text.includes("short spoken transition"));
-  // The script is a spoken edit by default, with verbatim on request and worked examples.
-  assert(text.includes("By default, write a spoken edit") && text.includes("verbatim"));
-  assert(text.includes("natural contractions") && text.includes("No ellipses or dashes"));
-  assert((skill.match(/^Written:/gm) ?? []).length >= 2 && (skill.match(/^Spoken:/gm) ?? []).length >= 2, "before-and-after examples");
-  // Delivery: v3 by default, one continuous text per part, splits only at paragraph ends.
-  assert(text.includes("Default to Eleven v3") && text.includes("one continuous text") && text.includes("only at paragraph ends"));
+  // The default is a two-host conversation rebuilt for the ear, written in passes from a brief of the post.
+  assert(skill.includes("Conversation (default)") && skill.includes("Host Warm and co-host Calm"));
+  for (const file of ["work/brief.md", "work/outline.md", "work/claims.md"]) assert(text.includes(file), file);
+  assert(text.includes("six passes") && text.includes("Don't follow the post's order"));
+  assert(text.includes("New illustrations yes, new facts no") && text.includes("Keep each claim's own exception"));
+  assert(text.includes("no sentence over 25 words") && text.includes("never three sentences under 7 words in a row"));
+  assert(text.includes("one real doubt per point") && text.includes("a payoff line"));
+  // A reading stays available: summary boxes are skipped, headings become short spoken transitions, with worked examples.
+  assert(/skip a summary box/i.test(text) && text.includes("short spoken transitions") && text.includes("verbatim"));
+  assert(text.includes("Contractions") && text.includes("No ellipses or dashes"));
+  assert((method.match(/^Written:/gm) ?? []).length >= 2 && (method.match(/^Spoken:/gm) ?? []).length >= 2, "before-and-after examples");
+  // Delivery: v3 by default, a voice per turn in a conversation, one continuous text for one voice, splits only where a section ends.
+  assert(text.includes("Default to Eleven v3") && text.includes("one entry per turn") && text.includes("one continuous text") && text.includes("only where a section ends"));
   // The voice check is a real gate that never continues by default.
   assert(text.includes("The voice check is a gate") && text.includes('Say "sounds right"') && text.includes("never continue by default"));
   assert(!text.includes("approve with voice check"), "the voice check is no longer optional");
   // Parts are evenly sized and stay under the request limit; length is estimated at 14 characters a second.
-  assert(text.includes("at or under 1,900 characters") && text.includes("all about the same size"));
+  assert(text.includes("at or under 1,900 characters") && text.includes("the smallest gap between the largest and smallest"));
   assert(text.includes("characters ÷ 14") && !/÷ 1[56]\b/.test(text), "length uses 14 characters a second");
   // Every part is faded and padded; only a loud ending is re-taken, and it is flagged rather than stopping the episode.
   assert(text.includes("areverse,atrim=0:0.05,volumedetect") && text.includes("only a level above −30 dB means the part may be cut off"));

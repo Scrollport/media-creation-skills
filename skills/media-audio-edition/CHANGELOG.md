@@ -1,5 +1,38 @@
 # Changelog
 
+## 5.0.0 — 2026-10-14
+
+From Alan's listen-check of the 4.3.0 voice check: the voice was fine, but the script was
+hard to follow and not organised the way a podcast is. The cause was the method: a spoken
+edit kept the post's facts, claims and order, so a web page built for skimming (summary
+first, definition-style headings, lists, caveats) was read out, with no question, roadmap,
+examples or recap, and no examples or analogies were allowed. NotebookLM's team describes the
+opposite: an outline, a script, a critique and a revision, then a pass for natural speech,
+with two hosts in different roles.
+
+- Default to a conversation: a host who explains the post and a co-host who stands in for
+  the listener, asks the next question, says the signposts and raises one real doubt per
+  point. Solo, a 2-minute brief and a straight reading stay available.
+- Write the script in six passes, following a new reference: a brief of the post (its
+  point, key points in plain words, best material, limits, what to leave out and any
+  problems), the question the episode answers, an outline (cold open, intro and roadmap,
+  two or three points each with an example, a doubt and a payoff, recap and takeaway,
+  outro), the draft, a pass for natural speech, and a counted checklist.
+- New illustrations yes, new facts no: framed examples and analogies are allowed; new
+  customers, results, numbers, prices, quotes or advice are not. Every factual line is listed
+  in work/claims.md with the post sentence it rests on, keeping its exceptions and hedges.
+- Rules for the ear: one idea per sentence, mixed lengths with no runs of very short
+  sentences, lists of three at most, few numbers, positive statements, plain words,
+  nothing that points at the page, and no stock phrases.
+- The approval message shows the outline, what was left out (listed in the show notes),
+  the checklist result and the full script, one turn per line. The voice check is the cold
+  open and intro, so both voices are heard.
+- The show notes add "Also in the post"; the transcript names each speaker; the join steps
+  move to a reference so the Skill stays under 500 lines.
+- Tested before any audio on two posts by fresh agents: blind panels scored the new script
+  8 for following by ear and 8 for structure against 3 and 4 for the 4.3.0 script, and
+  independent fact-checks found two small slips, fixed before recording.
+
 ## 4.3.0 — 2026-10-14
 
 From Alan's listen-check of the first verification episode: the audio and the

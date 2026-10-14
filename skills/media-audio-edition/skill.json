@@ -3,33 +3,58 @@
   "schema_version": 2,
   "id": "media-audio-edition",
   "title": "Blog Post to Podcast",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "status": "verified",
   "customer_proven": false,
-  "summary": "Pick one of three voices, approve the script, and get your post back as a podcast episode with intro music, a transcript, show notes, a LinkedIn post and an optional 45-second clip.",
-  "outcome": "Turn a post or newsletter into a narrated episode in your chosen voice, with intro music, show notes, a LinkedIn post and a short clip. You approve the script before anything is spent.",
-  "boundary": "It doesn't publish anything, host a podcast feed or post to LinkedIn; get past paywalls or logins; narrate a post you may not use; or spend anything before you approve the script, voice and maximum cost. The clip is made only when your computer can draw captions.",
+  "summary": "Approve one outline and script, and get your post back as a podcast episode two AI hosts talk through, with intro music, a transcript, show notes, a LinkedIn post and an optional 45-second clip.",
+  "outcome": "Turn a post or newsletter into a podcast episode people can follow by ear: two AI hosts talk it through, with intro music, show notes, a LinkedIn post and a short clip. You approve the script before anything is spent.",
+  "boundary": "It doesn't publish anything, host a podcast feed or post to LinkedIn; add facts the post doesn't contain; get past paywalls or logins; narrate a post you may not use; or spend anything before you approve the outline, script, voices and maximum cost. The clip is made only when your computer can draw captions.",
   "category": "media-creation",
   "capabilities": [
-    { "id": "text-to-speech", "tool_ids": ["elevenlabs.eleven-v3", "elevenlabs.eleven-flash-v2-5"] },
-    { "id": "dialogue-generation", "tool_ids": ["elevenlabs.eleven-v3"] },
-    { "id": "music-generation", "tool_ids": ["elevenlabs.eleven-music-v2"] }
+    {
+      "id": "text-to-speech",
+      "tool_ids": [
+        "elevenlabs.eleven-v3",
+        "elevenlabs.eleven-flash-v2-5"
+      ]
+    },
+    {
+      "id": "dialogue-generation",
+      "tool_ids": [
+        "elevenlabs.eleven-v3"
+      ]
+    },
+    {
+      "id": "music-generation",
+      "tool_ids": [
+        "elevenlabs.eleven-music-v2"
+      ]
+    }
   ],
-  "aliases": ["scrollport-audio-edition", "audio-edition"],
+  "aliases": [
+    "scrollport-audio-edition",
+    "audio-edition"
+  ],
   "license": "MIT",
   "instruction_path": "SKILL.md",
   "dependencies": {
-    "scrollport_control_tools": ["search_tools", "inspect_tool", "run_tool", "get_run", "get_wallet"],
+    "scrollport_control_tools": [
+      "search_tools",
+      "inspect_tool",
+      "run_tool",
+      "get_run",
+      "get_wallet"
+    ],
     "catalog_tools": [
       {
         "tool_id": "elevenlabs.eleven-v3",
         "required": true,
-        "purpose": "Read the approved script aloud in the chosen voice, or as a two-voice conversation (the expressive model, used by default)."
+        "purpose": "Record the approved script as a two-host conversation, a voice per turn, or in one voice (the expressive model, used by default)."
       },
       {
         "tool_id": "elevenlabs.eleven-flash-v2-5",
         "required": false,
-        "purpose": "Read the approved script in one voice for about half the price when the user picks the fast model."
+        "purpose": "Record a one-voice episode or reading for about half the price when the user picks the fast model."
       },
       {
         "tool_id": "elevenlabs.eleven-music-v2",
@@ -41,28 +66,28 @@
   },
   "inputs": [
     "Your post: a public link, pasted text or a file (required)",
-    "Voice: Warm, Calm or Deep (default: Warm)",
-    "Episode: a spoken edit of the whole post, written for listening, up to about 6 minutes (default), or the exact text read verbatim; for longer posts a faithful excerpt or a 2-minute summary; or a two-voice conversation",
-    "Names or terms to pronounce carefully (default: none; the agent flags likely ones)",
+    "Format: a two-host conversation of about 4–7 minutes (default), one host, a 2-minute brief, or the post read as written",
+    "Voices: Warm, Calm or Deep (default: host Warm, co-host Calm)",
+    "Focus: who your listeners are, or what to dwell on or skip (default: taken from the post)",
     "Show name for the intro and show notes (default: the blog or newsletter name)"
   ],
   "outputs": [
-    "episode.mp3: your post read aloud, with a 5-second intro and outro sting and no music under the speech",
-    "transcript.md: the approved script with timestamps",
-    "show-notes.md: a summary, key points, the link to the post and a note that the voice is AI",
+    "episode.mp3: an episode about your post that a listener can follow in one listen, with a 5-second intro and outro sting and no music under the speech",
+    "transcript.md: the approved script with speakers and timestamps",
+    "show-notes.md: a summary, the episode's points, what else the post covers, the link to the post and a note that the voices are AI",
     "linkedin-post.md: a LinkedIn post ready to paste",
     "clip-45s.mp4: an optional 45-second captioned clip, made only when your computer can render it"
   ],
   "cost": {
     "currency": "USD",
-    "model": "Narration is charged per character and the intro music per minute, at the prices Scrollport shows just before the quote. Joining, loudness, the transcript, show notes, LinkedIn post and clip are made on your computer at no cost.",
+    "model": "Speech is charged per character and the intro music per minute, at the prices Scrollport shows just before the quote. Writing the script, joining, loudness, the transcript, show notes, LinkedIn post and clip happen on your computer at no cost.",
     "trial_safe_max_usd": "0.600000",
-    "notes": "At list prices inspected on 14 October 2026 (expressive voice $0.14 per 1,000 characters, fast voice $0.07, music $0.21 per minute), 90 seconds of narration plans to about $0.20 and five minutes to about $0.60; the approved maximum adds a re-take of the longest part. Eleven v3 has settled at about 22% of its list price, so a five-minute episode typically costs about $0.15; the 14 October verification spent $0.17 on a six-minute episode. The fast voice roughly halves the narration part. Trial-safe: a two-minute episode (at most 1,900 narration characters and one 7-second music request) stays within $0.60, re-take included."
+    "notes": "At list prices inspected on 14 October 2026 (expressive voice $0.14 per 1,000 characters, fast voice $0.07, music $0.21 per minute), 90 seconds of speech plans to about $0.20 and five minutes to about $0.60; the approved maximum adds a re-take of the longest part. Eleven v3 has settled at about 22% of its list price, so a five-minute episode typically costs about $0.12 to $0.15, and a saved intro sting needs no new music. Trial-safe: a two-minute brief (at most 1,900 characters of speech and one 7-second music request) stays within $0.60, re-take included."
   },
   "approvals": [
-    "Approve the script, voice and maximum cost, shown together in one message, before any paid run; the approval time is recorded before the first run",
-    "Hear the first paragraph and say it sounds right before the rest is recorded; with no answer, the run stops and waits",
-    "Approve again after any change to the script, voice, model or length, and before any spend above the approved maximum",
+    "Approve the outline, script, voices and maximum cost, shown together in one message, before any paid run; the approval time is recorded before the first run",
+    "Hear the opening and say it sounds right before the rest is recorded; with no answer, the run stops and waits",
+    "Approve again after any change to the script, voices, model or length, and before any spend above the approved maximum",
     "Approve in your Scrollport wallet any run that Scrollport holds for confirmation"
   ],
   "compatibility": [

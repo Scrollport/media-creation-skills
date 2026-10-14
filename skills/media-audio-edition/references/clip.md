@@ -14,7 +14,7 @@ episode folder, and keep file names free of spaces and colons.
    ```
 
 2. Write work/clip.srt. The first caption covers the whole clip at the top of
-   the frame: the episode title, then "AI-narrated" on the next line. After it
+   the frame: the episode title, then "AI voices" on the next line. After it
    come the clip's own words as short captions of at most two lines of 32
    characters. Start each caption at the part's length × (characters before it
    ÷ the part's characters):
@@ -23,7 +23,7 @@ episode folder, and keep file names free of spaces and colons.
    1
    00:00:00,000 --> 00:00:44,600
    {\an8}Why we killed our free plan
-   AI-narrated
+   AI voices
 
    2
    00:00:00,000 --> 00:00:03,200

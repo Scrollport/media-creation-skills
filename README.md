@@ -7,7 +7,7 @@ Agent Skills that turn your writing into media you can share, powered by
 
 | If you want to... | Use |
 | --- | --- |
-| Turn a blog post or newsletter into a podcast episode, with show notes, a LinkedIn post and a short clip | [Blog Post to Podcast](skills/media-audio-edition/SKILL.md) (`media-audio-edition`) |
+| Turn a blog post or newsletter into a podcast episode two AI hosts talk through, with show notes, a LinkedIn post and a short clip | [Blog Post to Podcast](skills/media-audio-edition/SKILL.md) (`media-audio-edition`) |
 
 Blog Post to Podcast is the first published outcome Skill. Image and video
 generation belong in this category, but they will appear only after a specific
@@ -16,8 +16,9 @@ inspectable example output.
 
 ## Creative and cost boundaries
 
-- You approve the script, voice and maximum cost, shown together in one
-  message, before anything is spent.
+- You approve the outline, script, voices and maximum cost, shown together in
+  one message, before anything is spent. The script adds no facts the post
+  doesn't contain.
 - A tool reporting success isn't enough: the audio is checked for length,
   joins and loudness, and you're asked to listen once before you post.
 - Publishing to a podcast feed, LinkedIn or anywhere else stays your decision.
