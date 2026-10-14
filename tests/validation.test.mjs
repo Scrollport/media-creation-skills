@@ -156,15 +156,18 @@ test("Blog Post to Podcast gates spend on one approval and checks its audio", ()
   const joinSteps = readFileSync(join(dir, "references", "join.md"), "utf8");
   // Compare phrases regardless of line wrapping, across the Skill and the references it follows.
   const text = [skill, method, joinSteps].join("\n").replace(/\s+/g, " ");
-  for (const voice of ["Warm", "Calm", "Deep"]) assert(skill.includes(`| ${voice} |`), `${voice} voice is offered`);
+  for (const voice of ["Eric", "Jessica", "Warm", "Lily"]) assert(skill.includes(`| ${voice} |`), `${voice} voice is offered`);
+  // Legacy voices that didn't sit well with the current ones are gone.
+  for (const legacy of ["21m00Tcm4TlvDq8ikWAM", "pNInz6obpgDQGcFmaJgB"]) assert(!skill.includes(legacy), `legacy voice ${legacy} is not offered`);
+  assert(text.includes("Keep both hosts in one accent and one set") && text.includes("two or three other matched pairs"));
   // One message carries the script, the voice, the maximum and the typical spend; spending starts only after it is approved and recorded.
   const approval = skill.slice(skill.indexOf("Ready to record. Nothing has been spent yet."));
-  for (const part of ["Voices: host Warm", "Cost: about $", "The maximum assumes list price and one re-take", "Outline (times from the first word", "Left out, listed in the show notes", "Checked:", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);
+  for (const part of ["Voices: host Eric and co-host Jessica", "Cost: about $", "The maximum assumes list price and one re-take", "Outline (times from the first word", "Left out, listed in the show notes", "Checked:", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);
   // The typical spend comes first; the honest maximum follows it.
   assert(/Cost: about \$[0-9.]+, at most \$[0-9.]+/.test(approval), "typical spend leads the maximum");
   assert(text.includes("Only then start the first paid run."));
   // The default is a two-host conversation rebuilt for the ear, written in passes from a brief of the post.
-  assert(skill.includes("Conversation (default)") && skill.includes("Host Warm and co-host Calm"));
+  assert(skill.includes("Conversation (default)") && skill.includes("| Eric and Jessica; Warm alone for one voice |"));
   for (const file of ["work/brief.md", "work/outline.md", "work/claims.md"]) assert(text.includes(file), file);
   assert(text.includes("six passes") && text.includes("Don't follow the post's order"));
   assert(text.includes("New illustrations yes, new facts no") && text.includes("Keep each claim's own exception"));
@@ -183,7 +186,8 @@ test("Blog Post to Podcast gates spend on one approval and checks its audio", ()
   assert(text.includes("at or under 1,900 characters") && text.includes("the smallest gap between the largest and smallest"));
   assert(text.includes("characters ÷ 14") && !/÷ 1[56]\b/.test(text), "length uses 14 characters a second");
   // Every part is faded and padded; only a loud ending is re-taken, and it is flagged rather than stopping the episode.
-  assert(text.includes("areverse,atrim=0:0.05,volumedetect") && text.includes("only a level above −30 dB means the part may be cut off"));
+  assert(text.includes("areverse,atrim=0:0.05,volumedetect") && text.includes("only a level within 6 dB of the part's mean_volume") && text.includes("means the part may be cut off mid-word"));
+  assert(!text.includes("only a level above −30 dB"), "the absolute ending threshold flagged every Eleven v3 opening");
   assert(text.includes("areverse,afade=t=in:d=0.05,areverse,apad=pad_dur=0.25"));
   assert(text.includes("an ending never stops the episode") && text.includes("Listen closely at"));
   assert(!text.includes("below −40 dB for the last 50 ms"), "the old hard-stop ending rule is gone");

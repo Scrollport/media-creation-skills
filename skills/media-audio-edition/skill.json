@@ -67,7 +67,7 @@
   "inputs": [
     "Your post: a public link, pasted text or a file (required)",
     "Format: a two-host conversation of about 4–7 minutes (default), one host, a 2-minute brief, or the post read as written",
-    "Voices: Warm, Calm or Deep (default: host Warm, co-host Calm)",
+    "Voices: a matched pair for a conversation, Eric and Jessica (default) or Warm and Lily, or one voice for a solo episode",
     "Focus: who your listeners are, or what to dwell on or skip (default: taken from the post)",
     "Show name for the intro and show notes (default: the blog or newsletter name)"
   ],

@@ -42,7 +42,7 @@ Only the post is required; everything else has a default, so "go" is a complete 
 | --- | --- |
 | The post: a public link, pasted text or a file | none; ask for it |
 | Format: conversation (two hosts), solo (one host), brief (one host, under 2 minutes) or reading (the post read aloud) | Conversation, about 4–7 minutes |
-| Voices: Warm, Calm or Deep | Host Warm and co-host Calm; Warm alone for one voice |
+| Voices: a matched pair, or one voice | Eric and Jessica; Warm alone for one voice |
 | Focus: who the listeners are, what to dwell on or skip | Taken from the post |
 | Names or terms to pronounce carefully | None; you flag any a voice may stumble on |
 | Show name, said in the intro | The blog or newsletter name |
@@ -70,18 +70,21 @@ is missing or not live, say so and stop; never swap in a tool this Skill doesn't
 
 ### Voices
 
-| # | Name | Sounds like | voice_id |
-| --- | --- | --- | --- |
-| 1 | Warm | a relaxed British male storyteller | JBFqnCBsd6RMkjVDRZzb |
-| 2 | Calm | a clear, even American female narrator | 21m00Tcm4TlvDq8ikWAM |
-| 3 | Deep | a low, steady American male voice | pNInz6obpgDQGcFmaJgB |
+| Name | Sounds like | voice_id |
+| --- | --- | --- |
+| Eric | a friendly, middle-aged American man, made for conversation | cjVigY5qzO86Huf0OWal |
+| Jessica | an expressive, young American woman, made for conversation | cgSgspJ2msm6clMCkdW9 |
+| Warm | a warm, middle-aged British man, a storyteller | JBFqnCBsd6RMkjVDRZzb |
+| Lily | a warm, middle-aged British woman, a narrator | pFZP5JQG7iQjIQuC4Bku |
 
-Calm is the fast model's default voice and Deep is in the expressive model's worked
-example; Warm is one of ElevenLabs' standard voices. If inspect ever lists voices, offer
-three of those instead. A voice the tool rejects fails the run without a charge: offer the
-others and ask again. The user's own voice (a clone) isn't available; say so if asked.
-Two voices need a voice per line, which only the expressive model takes, so a conversation
-always uses Eleven v3; solo, brief and reading can use either model.
+These are ElevenLabs' current default voices. A conversation uses a matched pair: Eric and
+Jessica (default), or Warm and Lily for a British show. Keep both hosts in one accent and one
+set: a pair mixed across accents, or an older ElevenLabs voice next to a current one, sounds
+like two different recordings. If inspect ever lists voices, offer matched pairs from those
+instead. A voice the tool rejects fails the run without a charge: offer the others and ask
+again. The user's own voice (a clone) isn't available; say so if asked. Two voices need a
+voice per line, which only the expressive model takes, so a conversation always uses Eleven
+v3; solo, brief and reading can use either model.
 
 ### Delivery
 
@@ -133,9 +136,9 @@ Ask once, and skip anything the user has already said:
 
 ```
 How should it sound? Every voice is AI, and the show notes will say so.
-1. Conversation (default): two hosts talk your post through, about 5 minutes.
-   Host: Warm, a relaxed British male storyteller. Co-host: Calm, a clear, even American female narrator.
-2. Solo: one host walks through it, in Warm, Calm or Deep (a low, steady American male voice).
+1. Conversation (default): two hosts talk your post through, about 5 minutes, in two
+   American voices made for conversation (Eric and Jessica) or two British ones (Warm and Lily).
+2. Solo: one host walks through it, in Warm, Lily, Eric or Jessica.
 3. Brief: one host, under 2 minutes.
 4. Reading: your post read aloud as written, for when your exact words matter.
 Anything to focus on or skip, or who your listeners are?
@@ -288,7 +291,7 @@ the user approves it.
 Ready to record. Nothing has been spent yet.
 
 "Why we killed our free plan" · conversation · about 5 minutes
-Voices: host Warm, a relaxed British male storyteller; co-host Calm, a clear, even American female narrator · expressive model
+Voices: host Eric and co-host Jessica, American voices made for conversation · expressive model
 Cost: about $0.15, at most $0.85
 The maximum assumes list price and one re-take; speech lately settles near a fifth of it.
 You'll get: episode.mp3, transcript.md, show-notes.md, linkedin-post.md, clip-45s.mp4
@@ -362,23 +365,26 @@ Check each part as it arrives:
 - `ffmpeg -hide_banner -i work/part-01.mp3 -af volumedetect -f null -` reports
   a mean_volume above −40 dB: not silent;
 - `ffmpeg -hide_banner -i work/part-01.mp3 -af "areverse,atrim=0:0.05,volumedetect" -f null -`
-  gives the mean_volume of the last 50 ms. Eleven v3 usually stops right on the last sound,
-  so only a level above −30 dB means the part may be cut off mid-word.
+  gives the mean_volume of the last 50 ms. Eleven v3 often stops right on the last sound, so
+  a quiet tail is normal; only a level within 6 dB of the part's mean_volume (−25 dB or
+  louder when the mean is −19 dB) means the part may be cut off mid-word.
 
 A part that fails one of the first three checks gets one re-take within the approved
 maximum; if the re-take fails too, stop and tell the user plainly what went wrong and what
 was spent. A possibly cut ending also gets one re-take within the maximum (saved as
 work/part-01b.mp3), but an ending never stops the episode: keep the take that passes the
-other checks and ends more quietly, and if it is still above −30 dB, carry on and flag its
-time in the final message. With no room left in the maximum, keep the first take and flag it.
+other checks and ends more quietly, and if it is still that loud, carry on and flag its time
+in the final message. With no room left in the maximum, keep the first take and flag it.
 
-The voice check is a gate. Share part 1 and ask: "Here's the opening, with Warm as host and
-Calm as co-host. Does it sound right? Say "sounds right" and I'll record the rest, or tell me
-what to change." (One voice: "Here's the opening in Warm.") Record nothing more until the
+The voice check is a gate. Share part 1 and ask: "Here's the opening, with Eric as host and
+Jessica as co-host. Does it sound right? Say "sounds right" and I'll record the rest, or tell
+me what to change." (One voice: "Here's the opening in Warm.") Record nothing more until the
 user says it sounds right, and save that reply and its time. If nobody answers, save the
 state as waiting for the voice check and stop; never continue by default. A different voice,
 model or wording is a change: send a new approval message whose maximum includes what has
-been spent so far, then remake part 1 and check again.
+been spent so far, then remake part 1 and check again. If the voices don't sit well
+together, offer to record the opening in two or three other matched pairs, each priced like
+part 1, and make the take the user picks the new part 1.
 
 If the music fails twice (failed runs aren't charged), ask whether to finish without it.
 
@@ -415,7 +421,7 @@ Open with the summary, then the files; receipts go last, under Details.
 
 ```
 Episode ready: "Why we killed our free plan" · 4:52
-Conversation: host Warm, co-host Calm · AI voices disclosed in the show notes
+Conversation: host Eric, co-host Jessica · AI voices disclosed in the show notes
 $0.15 of $0.85 approved · script approved 14:02, before any audio
 episode.mp3 · transcript.md · show-notes.md · linkedin-post.md · clip-45s.mp4 (optional)
 
@@ -424,7 +430,7 @@ post: I checked the lengths, the endings, the joins and the loudness (−16.2 LU
 a listen confirms every word. Next time, say "same show" to reuse these voices and the intro.
 
 Details
-- Approved 14:02:11 +01:00 ("approve"): 4,100 characters in 4 parts, fingerprint 9c1e…, host Warm (JBFqnCBsd6RMkjVDRZzb), co-host Calm (21m00Tcm4TlvDq8ikWAM), elevenlabs.eleven-v3, maximum $0.85; first paid run 14:02:19
+- Approved 14:02:11 +01:00 ("approve"): 4,100 characters in 4 parts, fingerprint 9c1e…, host Eric (cjVigY5qzO86Huf0OWal), co-host Jessica (cgSgspJ2msm6clMCkdW9), elevenlabs.eleven-v3, maximum $0.85; first paid run 14:02:19
 - Voice check: part 1 shared 14:02:40; "sounds right" at 14:04:05
 - Part 1 · elevenlabs.eleven-v3 · run <run_id> · $0.011088 · ends at −47.3 dB (one line per part)
 - Music · elevenlabs.eleven-music-v2 · run <run_id> · $0.024500 · 7.0 s back, trimmed to 5.0 s
@@ -479,8 +485,8 @@ with its key, run id, cost, file and ending level. Never store keys, tokens or a
 - the user said part 1 sounded right before any other part was recorded;
 - every planned part succeeded, played through, had a plausible length for its text and was
   faded and padded at its end;
-- a part whose last 50 ms stayed above −30 dB after its re-take is flagged, with its time,
-  in the final message;
+- a part whose last 50 ms stayed within 6 dB of its mean level after its re-take is
+  flagged, with its time, in the final message;
 - the sting is 5 seconds (±0.1), or its shorter real length is reported, and both
   stings measure 1 to 3 LU below the speech;
 - episode.mp3 holds every part once, in order, between the stings, and matches its pieces;
