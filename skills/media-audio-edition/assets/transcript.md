@@ -1,7 +1,7 @@
 # Transcript: {Episode title}
 
 {Show name} · {episode length} · {date}
-Read by an AI voice ({voice name}) from an approved script of the post.
+Read by an AI voice ({voice name}) from an approved {spoken edit of the post, or its exact text}.
 Original post: {link to the post}
 
 [00:00] (intro music)

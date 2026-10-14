@@ -1,5 +1,28 @@
 # Changelog
 
+## 4.3.0 — 2026-10-14
+
+From Alan's listen-check of the first verification episode: the audio and the
+word at 0:25 are fine, but the script didn't sound natural, and its intonation
+and pauses were odd.
+
+- Write a spoken edit by default: the same facts, claims, numbers and order,
+  written for listening, with short sentences, contractions, lists and headings
+  turned into speech, plain names for code and tools, acronyms expanded once,
+  numbers said the way people say them, and pauses placed with punctuation and
+  paragraphs. Verbatim stays available, and the Skill shows three
+  before-and-after examples.
+- Send each narration part to Eleven v3 as one continuous text instead of one
+  entry per paragraph, and split parts only at paragraph ends. Neither speech
+  tool exposes voice settings, continuity fields or pause controls, and
+  Multilingual v2 isn't listed, so Eleven v3 stays the default as the more
+  natural model; the fast model is offered to save money or if v3 sounds uneven.
+- Make the voice check a gate: the first paragraph is recorded and shared, and
+  the rest is recorded only after the user says it sounds right. An unattended
+  run stops and waits.
+- Move the saved-state example into a reference file so the Skill stays under
+  500 lines.
+
 ## 4.2.0 — 2026-10-14
 
 From the second verification round, which stopped at the 4.1.0 ending check

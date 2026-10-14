@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "media-audio-edition",
   "title": "Blog Post to Podcast",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "status": "verified",
   "customer_proven": false,
   "summary": "Pick one of three voices, approve the script, and get your post back as a podcast episode with intro music, a transcript, show notes, a LinkedIn post and an optional 45-second clip.",
@@ -42,7 +42,7 @@
   "inputs": [
     "Your post: a public link, pasted text or a file (required)",
     "Voice: Warm, Calm or Deep (default: Warm)",
-    "Episode: a full reading up to about 6 minutes (default); for longer posts a faithful excerpt or a 2-minute summary; or a two-voice conversation",
+    "Episode: a spoken edit of the whole post, written for listening, up to about 6 minutes (default), or the exact text read verbatim; for longer posts a faithful excerpt or a 2-minute summary; or a two-voice conversation",
     "Names or terms to pronounce carefully (default: none; the agent flags likely ones)",
     "Show name for the intro and show notes (default: the blog or newsletter name)"
   ],
@@ -61,6 +61,7 @@
   },
   "approvals": [
     "Approve the script, voice and maximum cost, shown together in one message, before any paid run; the approval time is recorded before the first run",
+    "Hear the first paragraph and say it sounds right before the rest is recorded; with no answer, the run stops and waits",
     "Approve again after any change to the script, voice, model or length, and before any spend above the approved maximum",
     "Approve in your Scrollport wallet any run that Scrollport holds for confirmation"
   ],

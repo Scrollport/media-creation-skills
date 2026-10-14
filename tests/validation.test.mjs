@@ -162,6 +162,15 @@ test("Blog Post to Podcast gates spend on one approval and checks its audio", ()
   assert(text.includes("Only then start the first paid run."));
   // Summary boxes that repeat the opening are skipped, and headings become short spoken transitions.
   assert(text.includes("skip a summary box") && text.includes("short spoken transition"));
+  // The script is a spoken edit by default, with verbatim on request and worked examples.
+  assert(text.includes("By default, write a spoken edit") && text.includes("verbatim"));
+  assert(text.includes("natural contractions") && text.includes("No ellipses or dashes"));
+  assert((skill.match(/^Written:/gm) ?? []).length >= 2 && (skill.match(/^Spoken:/gm) ?? []).length >= 2, "before-and-after examples");
+  // Delivery: v3 by default, one continuous text per part, splits only at paragraph ends.
+  assert(text.includes("Default to Eleven v3") && text.includes("one continuous text") && text.includes("only at paragraph ends"));
+  // The voice check is a real gate that never continues by default.
+  assert(text.includes("The voice check is a gate") && text.includes('Say "sounds right"') && text.includes("never continue by default"));
+  assert(!text.includes("approve with voice check"), "the voice check is no longer optional");
   // Parts are evenly sized and stay under the request limit; length is estimated at 14 characters a second.
   assert(text.includes("at or under 1,900 characters") && text.includes("all about the same size"));
   assert(text.includes("characters ÷ 14") && !/÷ 1[56]\b/.test(text), "length uses 14 characters a second");
