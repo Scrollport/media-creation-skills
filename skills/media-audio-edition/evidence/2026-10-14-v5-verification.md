@@ -1,16 +1,16 @@
-# Blog Post to Podcast verification — 2026-10-15
+# Blog Post to Podcast 5.0.0 verification — 2026-10-14
 
 Status: **Machine checks passed on version 5.0.0. The script method was tested on two
-posts before any audio, the maintainer (Alan) chose the voices by ear, and his listen-check
-of the full episode is pending. Next review due 2026-11-14.**
+posts before any audio, and the maintainer chose the voices by ear and kept them after the
+full episode was delivered. Next review due 2026-11-13.**
 
 ## Why 5.0.0
 
-Alan's listen-check of the 4.3.0 voice check: the voice was fine, but the script was hard
-to follow and "not well organised and structured the way a podcast would be". A spoken
-edit kept the post's facts, claims and order, so a page built for skimming was read out
-with no question, roadmap, examples or recap. 5.0.0 rebuilds the episode for the ear: a
-two-host conversation written in six passes (brief, question, outline, draft, natural
+The maintainer's listen-check of the 4.3.0 voice check: the voice was fine, but the script
+was hard to follow and "not well organised and structured the way a podcast would be". A
+spoken edit kept the post's facts, claims and order, so a page built for skimming was read
+out with no question, roadmap, examples or recap. 5.0.0 rebuilds the episode for the ear:
+a two-host conversation written in six passes (brief, question, outline, draft, natural
 speech, a counted checklist with every factual line matched to the post).
 
 ## Script tests, before any audio (free)
@@ -45,12 +45,12 @@ from either test post.
   minimum, 2,000 characters and 50 entries per request. `get_wallet`: funds above the
   maximum, no daily cap, a $3.00 approval threshold.
 - Quote: about $0.12, at most $0.80, reusing the show's saved intro sting, so no music
-  request. Approved at 23:49:02 +01:00 on 14 October, recorded before the first paid run.
+  request. Approved at 22:49:02 UTC on 14 October, recorded before the first paid run.
 - Voice check: part 1 in Warm and the legacy Calm voice ran twice, because the ending
-  check (then an absolute −30 dB) flagged both takes. Alan: the format and script were
-  better, but the two voices didn't fit together. A new approval at 23:58:12 +01:00 raised
-  the maximum to $1.00, including what had been spent, to record the opening in three
-  matched pairs. He picked Eric and Jessica at 00:03:47 +01:00, and that take became
+  check (then an absolute −30 dB) flagged both takes. The maintainer found the format and
+  script better, but the two voices didn't fit together. A new approval at 22:58:12 UTC
+  raised the maximum to $1.00, including what had been spent, to record the opening in
+  three matched pairs. Eric and Jessica were picked at 23:03:47 UTC, and that take became
   part 1; parts 2 to 4 followed.
 
 | Step | Run | Cost | Length | Last 50 ms | Mean |
@@ -89,6 +89,13 @@ a plausible length for its text (0.91 to 1.07 times the estimate).
   whose last 50 ms peaked at −10.3 dB.
 - The voice check can now offer the opening in two or three other matched pairs, so the
   user picks by ear and the chosen take becomes part 1.
+- After the episode was delivered, the maintainer asked to try two pairs from ElevenLabs'
+  voice library, then chose to keep Eric and Jessica and have the Skill tell users they
+  can pick their own voices: the format question, the approval message and the voice check
+  now say so, and the Skill explains how to copy a voice's ID. One 31-character request
+  with a library voice (`4bbe9a62-1d97-4ebe-8420-2a879eadd534`, $0.002500) confirmed that
+  library voices work through the catalog tool. The round's spend, including that check,
+  was $0.191640.
 
 ## Limits
 

@@ -160,6 +160,10 @@ test("Blog Post to Podcast gates spend on one approval and checks its audio", ()
   // Legacy voices that didn't sit well with the current ones are gone.
   for (const legacy of ["21m00Tcm4TlvDq8ikWAM", "pNInz6obpgDQGcFmaJgB"]) assert(!skill.includes(legacy), `legacy voice ${legacy} is not offered`);
   assert(text.includes("Keep both hosts in one accent and one set") && text.includes("two or three other matched pairs"));
+  // The user is told they can bring their own voices from ElevenLabs' library.
+  const approvalBlock = skill.slice(skill.indexOf("Ready to record. Nothing has been spent yet."));
+  assert(text.includes("any voice in ElevenLabs' voice library works, given its voice ID") && skill.includes("Prefer other voices? Pick any in ElevenLabs' voice library") && approvalBlock.includes("ElevenLabs' voice library, by voice ID"));
+  assert(text.includes("or in voices the user picks from ElevenLabs' voice library") && text.includes("save the voice to My Voices, then pick Copy voice ID"), "the voice check offers the user's own voices, and the Skill says how to find an ID");
   // One message carries the script, the voice, the maximum and the typical spend; spending starts only after it is approved and recorded.
   const approval = skill.slice(skill.indexOf("Ready to record. Nothing has been spent yet."));
   for (const part of ["Voices: host Eric and co-host Jessica", "Cost: about $", "The maximum assumes list price and one re-take", "Outline (times from the first word", "Left out, listed in the show notes", "Checked:", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);

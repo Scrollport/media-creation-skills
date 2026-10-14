@@ -67,7 +67,7 @@
   "inputs": [
     "Your post: a public link, pasted text or a file (required)",
     "Format: a two-host conversation of about 4–7 minutes (default), one host, a 2-minute brief, or the post read as written",
-    "Voices: a matched pair for a conversation, Eric and Jessica (default) or Warm and Lily, or one voice for a solo episode",
+    "Voices: a matched pair for a conversation, Eric and Jessica (default) or Warm and Lily, one voice for a solo episode, or your own picks from ElevenLabs' voice library by voice ID",
     "Focus: who your listeners are, or what to dwell on or skip (default: taken from the post)",
     "Show name for the intro and show notes (default: the blog or newsletter name)"
   ],
@@ -82,7 +82,7 @@
     "currency": "USD",
     "model": "Speech is charged per character and the intro music per minute, at the prices Scrollport shows just before the quote. Writing the script, joining, loudness, the transcript, show notes, LinkedIn post and clip happen on your computer at no cost.",
     "trial_safe_max_usd": "0.600000",
-    "notes": "At list prices inspected on 14 October 2026 (expressive voice $0.14 per 1,000 characters, fast voice $0.07, music $0.21 per minute), 90 seconds of speech plans to about $0.20 and five minutes to about $0.60; the approved maximum adds a re-take of the longest part. Eleven v3 has settled at about 22% of its list price, so a five-minute episode typically costs about $0.12 to $0.15, and a saved intro sting needs no new music. Trial-safe: a two-minute brief (at most 1,900 characters of speech and one 7-second music request) stays within $0.60, re-take included."
+    "notes": "At list prices inspected on 14 October 2026 (expressive voice $0.14 per 1,000 characters, fast voice $0.07, music $0.21 per minute), 90 seconds of speech plans to about $0.20 and five minutes to about $0.60; the approved maximum adds a re-take of the longest part. Eleven v3 has settled at about 22% of its list price, so a five-minute episode typically costs about $0.12 to $0.15 (the 14 October verification episode, 5:01, cost $0.12), and a saved intro sting needs no new music. Trial-safe: a two-minute brief (at most 1,900 characters of speech and one 7-second music request) stays within $0.60, re-take included."
   },
   "approvals": [
     "Approve the outline, script, voices and maximum cost, shown together in one message, before any paid run; the approval time is recorded before the first run",
@@ -99,6 +99,6 @@
   "evidence": {
     "verified_at": "2026-10-14",
     "review_due_at": "2026-11-13",
-    "summary_path": "evidence/2026-10-14-verification.md"
+    "summary_path": "evidence/2026-10-14-v5-verification.md"
   }
 }

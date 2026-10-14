@@ -42,7 +42,7 @@ Only the post is required; everything else has a default, so "go" is a complete 
 | --- | --- |
 | The post: a public link, pasted text or a file | none; ask for it |
 | Format: conversation (two hosts), solo (one host), brief (one host, under 2 minutes) or reading (the post read aloud) | Conversation, about 4–7 minutes |
-| Voices: a matched pair, or one voice | Eric and Jessica; Warm alone for one voice |
+| Voices: a matched pair, one voice, or the user's own picks from ElevenLabs' voice library | Eric and Jessica; Warm alone for one voice |
 | Focus: who the listeners are, what to dwell on or skip | Taken from the post |
 | Names or terms to pronounce carefully | None; you flag any a voice may stumble on |
 | Show name, said in the intro | The blog or newsletter name |
@@ -80,26 +80,26 @@ is missing or not live, say so and stop; never swap in a tool this Skill doesn't
 These are ElevenLabs' current default voices. A conversation uses a matched pair: Eric and
 Jessica (default), or Warm and Lily for a British show. Keep both hosts in one accent and one
 set: a pair mixed across accents, or an older ElevenLabs voice next to a current one, sounds
-like two different recordings. If inspect ever lists voices, offer matched pairs from those
-instead. A voice the tool rejects fails the run without a charge: offer the others and ask
-again. The user's own voice (a clone) isn't available; say so if asked. Two voices need a
-voice per line, which only the expressive model takes, so a conversation always uses Eleven
-v3; solo, brief and reading can use either model.
+like two different recordings. Tell the user they can also choose their own: any voice in
+ElevenLabs' voice library works, given its voice ID (in ElevenLabs, save the voice to My
+Voices, then pick Copy voice ID from its More actions menu). A voice the tool rejects fails
+the run without a charge: say so and ask again. If inspect ever lists voices, offer matched
+pairs from those. A clone of the user's own voice isn't available; say so if asked. Two
+voices need a voice per line, which only the expressive model takes, so a conversation always
+uses Eleven v3; solo, brief and reading can use either.
 
 ### Delivery
 
-Neither speech tool's inspected contract offers voice settings (stability, similarity,
-style or speed), continuity fields (such as previous_text, next_text or previous request
-ids) or a pause control. So delivery comes from the model, the writing and where the parts
-split:
+Neither speech tool's inspected contract offers voice settings (stability, similarity, style
+or speed), continuity fields (such as previous_text, next_text or previous request ids) or a
+pause control. So delivery comes from the model, the writing and where the parts split:
 
 - Default to Eleven v3, the more natural of the two models. The fast model is steadier but
   flatter: offer it for one voice, to save money, or if v3 sounds uneven.
 - Conversation: one entry per turn, each with its speaker's voice_id. Eleven v3 reads the
   entries as a dialogue.
 - One voice: send each part as one continuous text, paragraphs separated by a blank line.
-  Separate entries are read as dialogue turns, which resets the intonation and adds uneven
-  pauses.
+  Separate entries are read as dialogue turns, resetting intonation and adding uneven pauses.
 - Split parts only where a section ends, as few as fit, so every join lands on a natural pause.
 - If inspect ever shows such settings or fields, use them: steady stability, normal speed,
   and the previous part's text or request id passed with the next part.
@@ -141,6 +141,7 @@ How should it sound? Every voice is AI, and the show notes will say so.
 2. Solo: one host walks through it, in Warm, Lily, Eric or Jessica.
 3. Brief: one host, under 2 minutes.
 4. Reading: your post read aloud as written, for when your exact words matter.
+Prefer other voices? Pick any in ElevenLabs' voice library and paste their voice IDs.
 Anything to focus on or skip, or who your listeners are?
 ```
 
@@ -202,8 +203,7 @@ when they are its exact words.
 The checklist (count with a small script where you can, not by eye):
 
 - the question, and why it matters, are clear by 20 seconds;
-- the roadmap uses no term the episode only explains later, and each point opens with its
-  signpost;
+- the roadmap uses no term that is explained only later; each point opens with its signpost;
 - each point is made once, with one example, one doubt or challenge, and a payoff line;
 - the recap returns to the question and ends on a takeaway the listener can act on;
 - no sentence over 25 words, and never three sentences under 7 words in a row within a turn;
@@ -243,8 +243,7 @@ Each part is one paid request. Keep every part at or under 1,900 characters, 5% 
 - count characters exactly as they will be sent: every turn's text, without the "Host:" and
   "Co-host:" labels, added up.
 
-Then put a blank line between the parts in work/script.txt. Its SHA-256 is the script
-fingerprint.
+Put a blank line between the parts in work/script.txt; its SHA-256 is the script fingerprint.
 
 The music is one request: `music_length_ms` 7000 (inside the 6–8 seconds needed to trim
 cleanly to 5), `force_instrumental` true, and a prompt such as "A 5-second instrumental
@@ -281,11 +280,10 @@ Scrollport will also ask the user to approve that request in their wallet.
 
 ## 5. Ask for approval in one message
 
-Show the outline, the script, the voices and the cost (typical spend first, then the
-maximum) together, in one message. Show the script's turns in order, with a blank line
-between turns and "(part 2)" and so on where a part starts, and put a blank line between
-the message's other lines too, so a chat doesn't run them together. Nothing is spent before
-the user approves it.
+Show the outline, the script, the voices and the cost (typical spend first, then the maximum)
+together, in one message. Show the script's turns in order, with "(part 2)" and so on where a
+part starts, and put a blank line between turns and between the message's other lines, so a
+chat doesn't run them together. Nothing is spent before the user approves it.
 
 ```
 Ready to record. Nothing has been spent yet.
@@ -315,17 +313,16 @@ Notes: <only when needed: no clip and why, a new music request, the wallet, a pr
 --- end of script ---
 
 Reply "approve" and I'll record the opening for you to hear. I'll record the rest only after
-you say it sounds right. Rather have one host, a brief, a straight reading, other voices or
-edits? Say so and I'll send a new version to approve.
+you say it sounds right. Rather have one host, a brief, a straight reading, edits, or other
+voices (any from ElevenLabs' voice library, by voice ID)? Say so and I'll send a new version.
 ```
 
 - Approval is an explicit yes to this message: "approve", "go ahead", "record it". A
   question, "looks good, but" or a yes to an earlier version is not.
 - Any change to the script, voices, model, format or length needs a new version of this
   message and a new approval.
-- Anything the user would miss goes here too: no ffmpeg, no clip, too little in the wallet,
-  or a problem in the post ("The post promises three reasons but gives two; the episode
-  says two").
+- Anything the user would miss goes here too: no ffmpeg, no clip, too little in the wallet or
+  a problem in the post ("It promises three reasons but gives two; the episode says two").
 
 ## 6. Record the approval, then make the audio
 
@@ -382,9 +379,10 @@ me what to change." (One voice: "Here's the opening in Warm.") Record nothing mo
 user says it sounds right, and save that reply and its time. If nobody answers, save the
 state as waiting for the voice check and stop; never continue by default. A different voice,
 model or wording is a change: send a new approval message whose maximum includes what has
-been spent so far, then remake part 1 and check again. If the voices don't sit well
-together, offer to record the opening in two or three other matched pairs, each priced like
-part 1, and make the take the user picks the new part 1.
+been spent so far, then remake part 1 and check again. If the voices don't sit well together,
+offer to record the opening in two or three other matched pairs, each priced like part 1, or
+in voices the user picks from ElevenLabs' voice library; the take they choose becomes the new
+part 1.
 
 If the music fails twice (failed runs aren't charged), ask whether to finish without it.
 

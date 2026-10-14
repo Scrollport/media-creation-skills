@@ -1,7 +1,8 @@
 # Blog Post to Podcast verification — 2026-10-14
 
-Status: **Machine checks passed on version 4.0.0; the maintainer listen-check
-(Alan) is pending; next review due 2026-11-13.**
+Status: **Machine checks passed on version 4.0.0. The maintainer's listen-check
+asked for a more natural script, which led to 4.3.0 and then 5.0.0; see [the
+5.0.0 verification](2026-10-14-v5-verification.md).**
 
 ## Brief
 
@@ -135,9 +136,13 @@ documented "keep going". The maintainer must listen to the assembled episode
 6. overall audio quality is accepted without requested changes; and
 7. the transcript, show notes and LinkedIn post are acceptable to publish.
 
-**Result, 14 October 2026:** pending. The machine checks set `verified_at` to
-2026-10-14 and `review_due_at` to 2026-11-13; Alan's listen-check is still
-required, and its result should be recorded here.
+**Result, 14 October 2026:** the maintainer listened to the episode. The audio
+and the end of part 1 ("predictability", about 0:25) were fine, but the script
+didn't sound natural and its intonation and pauses were odd, so the episode was
+not accepted as it stood (point 6). 4.3.0 changed the script method; a listen to
+its opening then found the script hard to follow, and 5.0.0 rebuilt the episode
+as a two-host conversation. See [the 5.0.0
+verification](2026-10-14-v5-verification.md).
 
 ## Honest boundary
 

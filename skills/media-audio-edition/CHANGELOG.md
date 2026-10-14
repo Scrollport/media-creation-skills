@@ -2,13 +2,13 @@
 
 ## 5.0.0 — 2026-10-14
 
-From Alan's listen-check of the 4.3.0 voice check: the voice was fine, but the script was
-hard to follow and not organised the way a podcast is. The cause was the method: a spoken
-edit kept the post's facts, claims and order, so a web page built for skimming (summary
-first, definition-style headings, lists, caveats) was read out, with no question, roadmap,
-examples or recap, and no examples or analogies were allowed. NotebookLM's team describes the
-opposite: an outline, a script, a critique and a revision, then a pass for natural speech,
-with two hosts in different roles.
+From the maintainer's listen-check of the 4.3.0 voice check: the voice was fine, but the
+script was hard to follow and not organised the way a podcast is. The cause was the method:
+a spoken edit kept the post's facts, claims and order, so a web page built for skimming
+(summary first, definition-style headings, lists, caveats) was read out, with no question,
+roadmap, examples or recap, and no examples or analogies were allowed. NotebookLM's team
+describes the opposite: an outline, a script, a critique and a revision, then a pass for
+natural speech, with two hosts in different roles.
 
 - Default to a conversation: a host who explains the post and a co-host who stands in for
   the listener, asks the next question, says the signposts and raises one real doubt per
@@ -29,15 +29,24 @@ with two hosts in different roles.
   open and intro, so both voices are heard.
 - The show notes add "Also in the post"; the transcript names each speaker; the join steps
   move to a reference so the Skill stays under 500 lines.
+- Voices: current ElevenLabs default voices in matched pairs, Eric and Jessica by default
+  (chosen by ear from three auditioned pairs) or Warm and Lily, and the user is told they
+  can bring any voice from ElevenLabs' voice library by its ID. The legacy Calm and Deep
+  voices are gone: next to a current voice they sounded like two different recordings.
+- The voice check can offer the opening in other matched pairs or in voices the user picks,
+  and the chosen take becomes part 1.
+- The ending check flags only a last 50 ms within 6 dB of the part's mean level; the
+  absolute −30 dB rule flagged every Eleven v3 opening.
 - Tested before any audio on two posts by fresh agents: blind panels scored the new script
   8 for following by ear and 8 for structure against 3 and 4 for the 4.3.0 script, and
-  independent fact-checks found two small slips, fixed before recording.
+  independent fact-checks found two small slips, fixed before recording. Recorded: a 5:01
+  episode at −16.4 LUFS whose kept parts cost $0.12.
 
 ## 4.3.0 — 2026-10-14
 
-From Alan's listen-check of the first verification episode: the audio and the
-word at 0:25 are fine, but the script didn't sound natural, and its intonation
-and pauses were odd.
+From the maintainer's listen-check of the first verification episode: the audio
+and the word at 0:25 are fine, but the script didn't sound natural, and its
+intonation and pauses were odd.
 
 - Write a spoken edit by default: the same facts, claims, numbers and order,
   written for listening, with short sentences, contractions, lists and headings
