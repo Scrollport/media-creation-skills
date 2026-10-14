@@ -1,5 +1,20 @@
 # Changelog
 
+## 4.2.0 — 2026-10-14
+
+From the second verification round, which stopped at the 4.1.0 ending check
+before any episode was made ($0.015 spent). Eleven v3 usually stops right on the
+last sound, so that rule would have failed most parts.
+
+- Pad every part's end with a 50 ms fade and 0.25 seconds of silence before
+  joining.
+- Treat a part as possibly cut off only when its last 50 ms, before the fade,
+  is above −30 dB, and re-take it once within the approved maximum.
+- If the re-take is no better, keep the take that ends more quietly, carry on
+  and flag its time in the final message. An ending never stops the episode.
+- Lead the approval message with the typical spend ("about $0.16, at most
+  $0.85") and say the maximum assumes list price and one re-take.
+
 ## 4.1.0 — 2026-10-14
 
 Fixes from the 14 October verification of 4.0.0, whose machine checks passed

@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "media-audio-edition",
   "title": "Blog Post to Podcast",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "status": "verified",
   "customer_proven": false,
   "summary": "Pick one of three voices, approve the script, and get your post back as a podcast episode with intro music, a transcript, show notes, a LinkedIn post and an optional 45-second clip.",

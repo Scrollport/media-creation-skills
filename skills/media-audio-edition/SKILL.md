@@ -164,13 +164,12 @@ the lines short, and the intro makes clear that both voices are AI.
 Each part is one paid request. Keep every part at or under 1,900 characters, 5% under the
 2,000-character limit (or under the inspected limit if that is lower), and at most 50 lines:
 
-- part 1 is the intro line and the opening sentence or two, under 400
-  characters: a cheap first test of the voice, and the voice check if the user
-  wants one;
+- part 1 is the intro line and the opening sentence or two, under 400 characters: a cheap
+  first test of the voice, and the voice check if the user wants one;
 - split the rest into the fewest parts that fit, all about the same size: 4,500
   characters become three parts of about 1,500, not 1,900, 1,900 and 700;
-- break between paragraphs (between lines in a conversation), or between
-  sentences inside a long paragraph; never inside a sentence;
+- break between paragraphs (lines, in a conversation), or between sentences in a long
+  paragraph; never inside a sentence;
 - if there will be a clip, give its passage a part of its own: 550–700 characters (about
   45 seconds), whole sentences, one point that stands on its own. Skip the clip for an
   episode under 90 seconds; it is short enough to share whole;
@@ -179,11 +178,11 @@ Each part is one paid request. Keep every part at or under 1,900 characters, 5% 
 Save the narration text, exactly as it will be read, to work/script.txt (parts
 in order, separated by blank lines). Its SHA-256 is the script fingerprint.
 
-The music is one request: `music_length_ms` 7000 (inside the 6–8 seconds
-needed to trim cleanly to 5), `force_instrumental` true, and a prompt such as
-"A 5-second instrumental podcast intro sting, <a mood that fits the post>,
-modern, no vocals, resolving cleanly by the fifth second." The same sting opens
-and closes the episode. Reusing a saved sting needs no request.
+The music is one request: `music_length_ms` 7000 (inside the 6–8 seconds needed to trim
+cleanly to 5), `force_instrumental` true, and a prompt such as "A 5-second instrumental
+podcast intro sting, <a mood that fits the post>, modern, no vocals, resolving cleanly by
+the fifth second." The same sting opens and closes the episode. Reusing a saved sting needs
+no request.
 
 Price it from the inspected numbers:
 
@@ -200,32 +199,33 @@ expressive model 90 seconds of narration plans to about $0.20 and 5 minutes to a
 music included, before the re-take. The fast model roughly halves the narration part. Keep
 dollar amounts in the state as decimal strings with six places.
 
-Quote the maximum from the inspected price, and also state the typical spend: narration at
-list price × the share it has recently settled at, plus the music at list price. The share
-is in podcast/show.json after an earlier episode; otherwise use 0.22, which Eleven v3
-settled at in October 2026 (its estimate at the start of a run was about 0.28 of list).
-With no known share for the chosen model, give no typical figure. Never lower the maximum
-because of it.
+Work out the typical spend as well: narration at list price × the share it has recently
+settled at, plus the music at list price. The share is in podcast/show.json after an
+earlier episode; otherwise use 0.22, which Eleven v3 settled at in October 2026 (its
+estimate at the start of a run was about 0.28 of list). Lead with the typical spend and
+give the maximum second, as in "about $0.16, at most $0.85". With no known share for the
+chosen model, give the maximum alone. Never lower the maximum because of the typical spend.
 
-Length in seconds: narration characters ÷ 14, plus 10 for the music and 0.6 for each gap.
+Length in seconds: narration characters ÷ 14, plus 10 for the music, 0.25 for each part's
+padding and 0.6 for each gap.
 
-Then read `get_wallet`. If `available` or `daily_remaining` is below the
-maximum, say so in the approval message. If `confirm_threshold` is below a
-single request's cost, warn that Scrollport will also ask the user to approve
-that request in their wallet.
+Then read `get_wallet`. If `available` or `daily_remaining` is below the maximum, say so in
+the approval message. If `confirm_threshold` is below a single request's cost, warn that
+Scrollport will also ask the user to approve that request in their wallet.
 
 ## 5. Ask for approval in one message
 
-Show the script, the voice and the maximum cost together, in one message.
-Nothing is spent before the user approves it.
+Show the script, the voice and the cost (typical spend first, then the maximum) together,
+in one message. Nothing is spent before the user approves it.
 
 ```
 Ready to record. Nothing has been spent yet.
 
 "Why we killed our free plan" · full reading · about 5 minutes
 Voice: Warm (1 of 3), a relaxed British male storyteller · expressive model
-Maximum cost: $0.80 at list price, including a re-take if a part comes back faulty
-Typical spend: about $0.14; narration has recently settled at about a fifth of list price
+Cost: about $0.14, at most $0.80
+The maximum assumes list price and one re-take; narration has recently settled at about a
+fifth of list price.
 You'll get: episode.mp3, transcript.md, show-notes.md, linkedin-post.md, clip-45s.mp4
 Changes for listening: skipped the "In brief" box, which repeats the opening; read
 headings as short transitions; dropped 2 image captions; "e.g." read as "for example"
@@ -236,7 +236,7 @@ Pronunciation: "Nguyen" is written "Win" so the voice says it right
 --- end of script ---
 
 Reply "approve" to record it, or "approve with voice check" to hear the opening before I
-record the rest. Rather have Calm or Deep, the fast model (maximum $0.40), a shorter
+record the rest. Rather have Calm or Deep, the fast model (at most $0.40), a shorter
 episode or edits? Say so and I'll send a new version to approve.
 ```
 
@@ -279,28 +279,28 @@ music to work/sting-raw.mp3) and record `cost_final`.
 
 Check each part as it arrives:
 
-- `ffmpeg -v error -i work/part-01.mp3 -f null -` prints nothing: it plays
-  through;
+- `ffmpeg -v error -i work/part-01.mp3 -f null -` prints nothing: it plays through;
 - `ffprobe -v error -show_entries format=duration -of csv=p=0 work/part-01.mp3`
   is between 0.7 and 1.4 times (characters ÷ 14) seconds: a plausible length
   for its text. This only checks length; it can't tell which words were read;
 - `ffmpeg -hide_banner -i work/part-01.mp3 -af volumedetect -f null -` reports
   a mean_volume above −40 dB: not silent;
 - `ffmpeg -hide_banner -i work/part-01.mp3 -af "areverse,atrim=0:0.05,volumedetect" -f null -`
-  reports a mean_volume below −40 dB for the last 50 ms: it ends in quiet, not
-  in the middle of a word.
+  gives the mean_volume of the last 50 ms. Eleven v3 usually stops right on the last sound,
+  so only a level above −30 dB means the part may be cut off mid-word.
 
-A part that fails a check gets one re-take, as long as the spend so far plus the
-re-take at list price stays within the approved maximum. If the re-take fails
-too, or there is no room left, stop and tell the user plainly what went wrong
-and what was spent.
+A part that fails one of the first three checks gets one re-take within the approved
+maximum; if the re-take fails too, stop and tell the user plainly what went wrong and what
+was spent. A possibly cut ending also gets one re-take within the maximum (saved as
+work/part-01b.mp3), but an ending never stops the episode: keep the take that passes the
+other checks and ends more quietly, and if it is still above −30 dB, carry on and flag its
+time in the final message. With no room left in the maximum, keep the first take and flag it.
 
-Voice check: after part 1, share work/part-01.mp3 and wait. "Keep going"
-continues. A different voice or model is a change: send a new approval message
-whose maximum includes what has been spent so far, then remake part 1.
+Voice check: after part 1, share it and wait. "Keep going" continues. A different voice or
+model is a change: send a new approval message whose maximum includes what has been spent
+so far, then remake part 1.
 
-If the music fails twice (failed runs aren't charged), ask whether to finish
-without it.
+If the music fails twice (failed runs aren't charged), ask whether to finish without it.
 
 ## 7. Join, trim and check (free)
 
@@ -310,11 +310,11 @@ Play them in this order: …". Loudness: not measured. Clip: skipped.
 
 Otherwise, working in the episode folder:
 
-1. Turn every part into the same format with a 50 ms fade at its end (one
-   command per part), and make a 0.6-second gap:
+1. Turn every kept part into the same format, fading its last 50 ms and adding 0.25
+   seconds of silence after it (one command per part), and make a 0.6-second gap:
 
    ```
-   ffmpeg -y -v error -i work/part-01.mp3 -af "areverse,afade=t=in:d=0.05,areverse" -ar 44100 -ac 2 -c:a pcm_s16le work/part-01.wav
+   ffmpeg -y -v error -i work/part-01.mp3 -af "areverse,afade=t=in:d=0.05,areverse,apad=pad_dur=0.25" -ar 44100 -ac 2 -c:a pcm_s16le work/part-01.wav
    ffmpeg -y -v error -f lavfi -i anullsrc=r=44100:cl=stereo -t 0.6 -c:a pcm_s16le work/gap.wav
    ```
 
@@ -357,33 +357,27 @@ Otherwise, working in the episode folder:
      below the speech level. Report the figures. Without the loudness filters, leave out
      the loudnorm options and say loudness wasn't set or measured.
 
-A failed join is local: fix it and run it again. Never pay to remake audio
-because a join failed.
+A failed join is local: fix it and run it again; never pay to remake audio because of it.
 
-Copy work/sting-raw.mp3 to podcast/sting-raw.mp3 and write podcast/show.json
-(show name, voice, voice_id, tool_id and the share of list price the narration
-settled at), so "same show" works next time.
+Copy work/sting-raw.mp3 to podcast/sting-raw.mp3 and write podcast/show.json (show name,
+voice, voice_id, tool_id and the share of list price the narration settled at).
 
 ## 8. Transcript, show notes, LinkedIn post and clip (free)
 
 Fill the templates:
 
-- [transcript](assets/transcript.md): the approved script with the real
-  spellings, and a timestamp at the start of each part (5.6 seconds for the
-  intro and gap, plus the speech.txt lines before it). In a conversation, start
-  each line with the speaker's voice name.
-- [show notes](assets/show-notes.md): a two- or three-sentence summary, three
-  to five key points and the link to the post, all taken from the post, plus
-  the AI disclosure (for a conversation, say both voices are AI). Ask for the
-  link if the post was pasted.
-- [LinkedIn post](assets/linkedin-post.md): under 1,300 characters, the hook
-  in the first two lines, nothing the post doesn't say, first person only if
-  the user wrote the post, and the episode link left for the user to add after
-  they upload it.
+- [transcript](assets/transcript.md): the approved script with the real spellings, and a
+  timestamp at the start of each part (5.6 seconds for the intro and gap, plus the
+  speech.txt lines before it). In a conversation, start each line with the speaker's name.
+- [show notes](assets/show-notes.md): a two- or three-sentence summary, three to five key
+  points and the link to the post, all taken from the post, plus the AI disclosure (for a
+  conversation, say both voices are AI). Ask for the link if the post was pasted.
+- [LinkedIn post](assets/linkedin-post.md): under 1,300 characters, the hook in the first
+  two lines, nothing the post doesn't say, first person only if the user wrote the post, and
+  the episode link left for the user to add after they upload it.
 
-When the clip is planned, make it with [the clip steps](references/clip.md).
-If any clip step fails, skip the clip and say why; the episode doesn't depend
-on it.
+When the clip is planned, make it with [the clip steps](references/clip.md). If any clip
+step fails, skip the clip and say why; the episode doesn't depend on it.
 
 ## 9. Hand over the result
 
@@ -402,18 +396,20 @@ to reuse this voice and intro.
 
 Details
 - Approved 14:02:11 +01:00 ("approve"): 3,900 characters in 4 parts, fingerprint 9c1e…, Warm (JBFqnCBsd6RMkjVDRZzb), elevenlabs.eleven-v3, maximum $0.80; first paid run 14:02:19
-- Part 1 · elevenlabs.eleven-v3 · run <run_id> · $0.011088 (one line per part)
+- Part 1 · elevenlabs.eleven-v3 · run <run_id> · $0.011088 · ends at −47.3 dB (one line per part)
 - Music · elevenlabs.eleven-music-v2 · run <run_id> · $0.024500 · 7.0 s back, trimmed to 5.0 s
 - Total $0.144620 of $0.800000; re-take not used
-- Checks: every part played through, ended in quiet and had a plausible length for its text (lengths only, not words); episode length matches its pieces; −16.2 LUFS, stings 2.3 LU under the speech
+- Checks: every part played through and had a plausible length for its text (lengths only, not words); no ending flagged; episode length matches its pieces; −16.2 LUFS, stings 2.3 LU under the speech
 - Skipped: none
 ```
 
-Put anything missing in the summary itself, for example "clip skipped: this computer's
-ffmpeg can't draw captions", "not joined: no ffmpeg; parts below in order" or "loudness not
-measured". Write "Episode ready" only when every part is in one episode file; otherwise
-"Episode parts ready". "Before any audio" must be true: the recorded approval time comes
-before the first paid run.
+If an ending was flagged, add a line after the files: "Listen closely at 0:25: the voice
+may clip its last word there." The time is that part's start (as in the transcript) plus
+its length before padding. Put anything else missing in the summary too, for example
+"clip skipped: this computer's ffmpeg can't draw captions", "not joined: no ffmpeg; parts
+below in order" or "loudness not measured". Write "Episode ready" only when every part is
+in one episode file; otherwise "Episode parts ready". "Before any audio" must be true: the
+recorded approval time comes before the first paid run.
 
 ## Saved state
 
@@ -433,7 +429,7 @@ keys, tokens or approval links in it.
   "prices": {"read_at": "2026-10-14T13:58:40+01:00", "narration_per_1k": "0.140000", "minimum_per_request": "0.002500", "music_per_minute": "0.210000", "characters_per_request": 2000, "settled_share": "0.22"},
   "plan_usd": "0.570500", "typical_usd": "0.144620", "maximum_usd": "0.800000",
   "approval": {"at": "2026-10-14T14:02:11+01:00", "reply": "approve", "sha256": "<fingerprint>", "voice_id": "JBFqnCBsd6RMkjVDRZzb", "tool_id": "elevenlabs.eleven-v3", "maximum_usd": "0.800000"},
-  "runs": [{"step": "part-1", "tool_id": "elevenlabs.eleven-v3", "idempotency_key": "<UUID; MCP or HTTP only>", "started_at": "2026-10-14T14:02:19+01:00", "run_id": "<run_id>", "status": "succeeded", "cost_final": "0.011088", "file": "work/part-01.mp3"}],
+  "runs": [{"step": "part-1", "tool_id": "elevenlabs.eleven-v3", "idempotency_key": "<UUID; MCP or HTTP only>", "started_at": "2026-10-14T14:02:19+01:00", "run_id": "<run_id>", "status": "succeeded", "cost_final": "0.011088", "file": "work/part-01.mp3", "tail_db": "-47.3", "flagged": false}],
   "spent_usd": "0.011088", "updated_at": "2026-10-14T14:02:41+01:00"
 }
 ```
@@ -442,28 +438,26 @@ Before approval, `approval` is null and `runs` is empty.
 
 ## Retries and resuming
 
-- Lost response or timeout: if you have the run_id, read it with `get_run`
-  (CLI: `scrollport get_run <run_id>`). If you don't, repeat the identical
-  start: the same CLI command without `--new` (the CLI reuses its saved key),
-  or over MCP or HTTP the same tool_id, input and idempotency_key. Scrollport
-  returns the original run, so nothing is charged twice.
-- Queued or running: keep reading the same run. Never start a replacement while
-  a saved run is queued or running.
-- An intentional repeat, such as a re-take: `run_tool … --new` in the CLI, or a
-  fresh idempotency_key over MCP or HTTP. Only within the approved maximum, or
-  after a new approval.
+- Lost response or timeout: if you have the run_id, read it with `get_run` (CLI:
+  `scrollport get_run <run_id>`). If you don't, repeat the identical start: the same CLI
+  command without `--new` (the CLI reuses its saved key), or over MCP or HTTP the same
+  tool_id, input and idempotency_key. Scrollport returns the original run, so nothing is
+  charged twice.
+- Queued or running: keep reading the same run. Never start a replacement while a saved
+  run is queued or running.
+- An intentional repeat, such as a re-take: `run_tool … --new` in the CLI, or a fresh
+  idempotency_key over MCP or HTTP. Only within the approved maximum, or after a new approval.
 - Failed: not charged, and the hold is released. Read the error and its hint. Try the same
   request once more as an intentional repeat; it doesn't use the re-take, because nothing
   was charged. If it fails again, stop and tell the user. A part that is too long can be
   split differently without a new approval (the same words and voice, and the maximum still
   holds); anything that changes the script, voice or length needs one.
 - Waiting for the user's approval in Scrollport (`confirmation_required` or
-  `awaiting_approval`): show them the approval link and the estimate, wait,
-  then read the same run. Never approve it yourself.
-- Not enough funds, or the daily limit reached: stop and tell the user. You
-  can't add funds.
-- An expired download link: read the finished run again with `get_run` for a
-  fresh link. Don't pay again.
+  `awaiting_approval`): show them the approval link and the estimate, wait, then read the
+  same run. Never approve it yourself.
+- Not enough funds, or the daily limit reached: stop and tell the user; you can't add funds.
+- An expired download link: read the finished run again with `get_run` for a fresh link.
+  Don't pay again.
 - Resuming later: read work/state.json, read every saved run that hasn't finished, and
   reuse every part already downloaded. If the fingerprint of work/script.txt no longer
   matches the approval, ask again before any paid run.
@@ -471,8 +465,10 @@ Before approval, `approval` is null and `runs` is empty.
 ## Done means
 
 - the approval was recorded before the first paid run started;
-- every planned part succeeded, played through, ended in quiet (its last 50 ms below
-  −40 dB) and had a plausible length for its text;
+- every planned part succeeded, played through, had a plausible length for its text and was
+  faded and padded at its end;
+- a part whose last 50 ms stayed above −30 dB after its re-take is flagged, with its time,
+  in the final message;
 - the sting is 5 seconds (±0.1), or its shorter real length is reported, and both
   stings measure 1 to 3 LU below the speech;
 - episode.mp3 holds every part once, in order, between the stings, and its

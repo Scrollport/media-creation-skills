@@ -156,16 +156,20 @@ test("Blog Post to Podcast gates spend on one approval and checks its audio", ()
   for (const voice of ["Warm", "Calm", "Deep"]) assert(skill.includes(`| ${voice} |`), `${voice} voice is offered`);
   // One message carries the script, the voice, the maximum and the typical spend; spending starts only after it is approved and recorded.
   const approval = skill.slice(skill.indexOf("Ready to record. Nothing has been spent yet."));
-  for (const part of ["Voice: Warm (1 of 3)", "Maximum cost:", "Typical spend:", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);
+  for (const part of ["Voice: Warm (1 of 3)", "Cost: about $", "The maximum assumes list price and one re-take", "--- script", 'Reply "approve"']) assert(approval.includes(part), part);
+  // The typical spend comes first; the honest maximum follows it.
+  assert(/Cost: about \$[0-9.]+, at most \$[0-9.]+/.test(approval), "typical spend leads the maximum");
   assert(text.includes("Only then start the first paid run."));
   // Summary boxes that repeat the opening are skipped, and headings become short spoken transitions.
   assert(text.includes("skip a summary box") && text.includes("short spoken transition"));
   // Parts are evenly sized and stay under the request limit; length is estimated at 14 characters a second.
   assert(text.includes("at or under 1,900 characters") && text.includes("all about the same size"));
   assert(text.includes("characters ÷ 14") && !/÷ 1[56]\b/.test(text), "length uses 14 characters a second");
-  // Every part must end in quiet and gets a short end fade; the length check doesn't claim to check words.
-  assert(text.includes("areverse,atrim=0:0.05,volumedetect") && text.includes("below −40 dB for the last 50 ms"));
-  assert(text.includes("areverse,afade=t=in:d=0.05,areverse"));
+  // Every part is faded and padded; only a loud ending is re-taken, and it is flagged rather than stopping the episode.
+  assert(text.includes("areverse,atrim=0:0.05,volumedetect") && text.includes("only a level above −30 dB means the part may be cut off"));
+  assert(text.includes("areverse,afade=t=in:d=0.05,areverse,apad=pad_dur=0.25"));
+  assert(text.includes("an ending never stops the episode") && text.includes("Listen closely at"));
+  assert(!text.includes("below −40 dB for the last 50 ms"), "the old hard-stop ending rule is gone");
   assert(!/matched its text/i.test(text) && text.includes("it can't tell which words were read"));
   // The sting is trimmed, checked and set 2 LU under the measured speech; the joins re-encode.
   assert(text.includes('"music_length_ms": 7000') && text.includes("atrim=0:5"));
