@@ -34,7 +34,9 @@ Play them in this order: …". Loudness: not measured. Clip: skipped.
    ```
 
 4. Write work/join.txt with five lines, `file 'sting-5s.wav'`, `file 'gap.wav'`,
-   `file 'speech.wav'`, `file 'gap.wav'` and `file 'sting-5s.wav'`, then join and re-encode:
+   `file 'speech.wav'`, `file 'gap.wav'` and `file 'sting-5s.wav'`, then join and re-encode.
+   `-y` may only replace an episode.mp3 this run made; if the folder holds one from an
+   earlier episode, stop and use a new folder instead (see What the user gets):
 
    ```
    ffmpeg -y -v error -f concat -safe 0 -i work/join.txt -ar 44100 -c:a libmp3lame -b:a 128k episode.mp3

@@ -22,7 +22,7 @@ words; keep tool ids, run ids and per-call costs for the Details at the end.
 ## What the user gets
 
 One folder, podcast/<today's date>-<post-slug>/ (the last part of the post's link, or its
-title in lowercase with hyphens), holding:
+title in lowercase with hyphens, plus -2, -3 if it already holds an episode), holding:
 
 - **episode.mp3**: a 4–7 minute episode about the post, with a 5-second intro and outro sting and no music under speech
 - **transcript.md**: the approved script with speakers and timestamps
@@ -283,7 +283,8 @@ Scrollport will also ask the user to approve that request in their wallet.
 Show the outline, the script, the voices and the cost (typical spend first, then the maximum)
 together, in one message. Show the script's turns in order, with "(part 2)" and so on where a
 part starts, and put a blank line between turns and between the message's other lines, so a
-chat doesn't run them together. Nothing is spent before the user approves it.
+chat doesn't run them together. Say that only the script and the music prompt leave this
+computer, through Scrollport to ElevenLabs. Nothing is spent before the user approves it.
 
 ```
 Ready to record. Nothing has been spent yet.
@@ -293,6 +294,7 @@ Voices: host Eric and co-host Jessica, American voices made for conversation · 
 Cost: about $0.15, at most $0.85
 The maximum assumes list price and one re-take; speech lately settles near a fifth of it.
 You'll get: episode.mp3, transcript.md, show-notes.md, linkedin-post.md, clip-45s.mp4
+Sent to ElevenLabs through Scrollport: this script and the music prompt only; take out anything confidential first
 
 Outline (times from the first word, rounded to 5 seconds)
 0:00 Cold open: what happens when a company takes away its free plan?
