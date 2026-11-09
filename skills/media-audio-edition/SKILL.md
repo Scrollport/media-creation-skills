@@ -10,7 +10,7 @@ metadata:
 
 Turn a post or newsletter into an episode people can follow by ear, with intro music, show
 notes, a LinkedIn post and a short clip. The user approves the outline and the script
-before anything is spent.
+before anything is spent. [Blog Post to Podcast on Scrollport](https://scrollport.com/skills/media-audio-edition): an example result, prices and setup.
 
 A web page is built to be skimmed: a summary first, then headings, definitions, lists and
 links. Read aloud, it is hard to follow, because a listener can't skim, scroll back or see a
