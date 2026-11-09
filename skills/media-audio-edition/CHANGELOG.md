@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.0.1 — 2026-11-09
+
+Wording only. The approval message now says what leaves the computer: only the approved
+script and the music prompt, sent through Scrollport to ElevenLabs, and anything
+confidential should come out of the script first. A new run never replaces an earlier
+episode or clip: an existing episode folder gets a -2, -3 suffix, and the join and clip steps
+replace only files from the same run. ClawHub's security audit flagged both gaps. The
+workflow, tools, prices and verification are unchanged. Adds a link to the Skill's page on scrollport.com (an example result, prices and setup), so readers on ClawHub and other mirrors can find it.
+
 ## 5.0.0 — 2026-10-14
 
 From the maintainer's listen-check of the 4.3.0 voice check: the voice was fine, but the

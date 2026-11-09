@@ -36,7 +36,8 @@ episode folder, and keep file names free of spaces and colons.
    were asking better questions.
    ```
 
-3. Render a 1080 × 1080 clip with a moving waveform and the captions:
+3. Render a 1080 × 1080 clip with a moving waveform and the captions. `-y` may only
+   replace a clip-45s.mp4 this run made; never replace an earlier episode's clip:
 
    ```
    ffmpeg -y -v error -ss <start> -t <length> -i episode.mp3 -f lavfi -i color=c=0x15171c:s=1080x1080:r=30 -filter_complex "[0:a]showwaves=s=1080x300:mode=cline:rate=30:draw=full:colors=white[w];[1:v][w]overlay=0:390:shortest=1,subtitles=work/clip.srt:force_style='Fontsize=16,MarginV=60,MarginL=20,MarginR=20'[v]" -map "[v]" -map 0:a -c:v libx264 -pix_fmt yuv420p -c:a aac -b:a 160k -shortest clip-45s.mp4
